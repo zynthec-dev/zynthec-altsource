@@ -31,7 +31,7 @@
       "screenshots": []
     },
     "com.zynthec.liveMic": {
-      "ipaFile": "liveMic-1.0.5.ipa",
+      "ipaFile": "liveMic-1.0.6.ipa",
       "name": "liveMic",
       "developerName": "zynthec",
       "subtitle": "Dein Mikrofon, direkt und unkompliziert.",
@@ -39,7 +39,7 @@
       "category": "utilities",
       "tintColor": "#00C7B7",
       "iconFile": "catalog/assets/livemic-icon.png",
-      "versionDescription": "Version 1.0.5 ergänzt einen standardisierten WAV-Livestream für VLC und andere Audioplayer sowie die automatische Listener-Wiederherstellung und direkte LAN-Steuerung.",
+      "versionDescription": "Version 1.0.6 repariert den Fernstart aus dem Hintergrund, indem die aktive Audiositzung beim Wechsel vom stillen Bereitschaftston zur Mikrofonaufnahme erhalten bleibt. VLC-WAV-Stream und LAN-Steuerung sind enthalten.",
       "screenshots": []
     },
     "com.google.ios.youtubemusic": {
