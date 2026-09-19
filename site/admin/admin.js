@@ -116,13 +116,19 @@ async function ensureRelease() {
   }
 }
 
+function releaseAssetName(filename) {
+  return filename.trim().replace(/\s+/g, ".");
+}
+
 async function uploadIPA(file) {
   const release = await ensureRelease();
-  const existing = release.assets.find(asset => asset.name === file.name);
+  const assetName = releaseAssetName(file.name);
+  const existing = release.assets.find(asset => asset.name === assetName);
   if (existing) await api(`/releases/assets/${existing.id}`, { method: "DELETE" });
-  const uploadURL = release.upload_url.replace("{?name,label}", "") + `?name=${encodeURIComponent(file.name)}`;
+  const uploadURL = release.upload_url.replace("{?name,label}", "") + `?name=${encodeURIComponent(assetName)}`;
   const response = await fetch(uploadURL, { method: "POST", headers: { Accept: "application/vnd.github+json", Authorization: `Bearer ${state.token}`, "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/octet-stream" }, body: file });
   if (!response.ok) throw new ApiError((await response.json()).message || "IPA-Upload fehlgeschlagen", response.status);
+  return assetName;
 }
 
 async function deleteIPA(filename) {
@@ -163,9 +169,9 @@ async function save() {
   $("#editorStatus").textContent = ipa?.size ? "IPA wird hochgeladen …" : "Änderungen werden gespeichert …";
   try {
     if (ipa?.size) {
-      await uploadIPA(ipa);
-      if (state.edit.original.ipaFile && state.edit.original.ipaFile !== ipa.name) await deleteIPA(state.edit.original.ipaFile);
-      app.ipaFile = ipa.name;
+      const assetName = await uploadIPA(ipa);
+      if (state.edit.original.ipaFile && state.edit.original.ipaFile !== assetName) await deleteIPA(state.edit.original.ipaFile);
+      app.ipaFile = assetName;
     }
     if (icon?.size) {
       const path = safeAssetName(app, icon);

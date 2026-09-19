@@ -51,7 +51,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(filenames, {
             "miPet-0.3-beta.ipa",
             "liveMic-1.0.ipa",
-            "YouTube Music Ultimate-2.4.1_9.37.2.ipa",
+            "YouTube.Music.Ultimate-2.4.1_9.37.2.ipa",
         })
 
     def test_admin_is_built_without_storefront_or_installer_artifacts(self):
