@@ -10,7 +10,6 @@
       "tintColor": "#00C7B7",
       "iconFile": "catalog/assets/mipet-icon.png",
       "versionDescription": "Erste öffentliche Beta von miPet.",
-      "downloadURL": "https://altsource.zynthec.com/ipas/miPet-0.3-beta.ipa",
       "screenshots": []
     },
     "com.zynthec.liveMic": {
@@ -23,7 +22,6 @@
       "tintColor": "#00C7B7",
       "iconFile": "catalog/assets/livemic-icon.png",
       "versionDescription": "Version 1.0 von liveMic.",
-      "downloadURL": "https://altsource.zynthec.com/ipas/liveMic-1.0.ipa",
       "screenshots": []
     },
     "com.google.ios.youtubemusic": {
@@ -36,7 +34,6 @@
       "tintColor": "#FF0033",
       "iconFile": "catalog/assets/youtube-music-ultimate-icon.png",
       "versionDescription": "Ultimate 2.4.1 auf Basis von YouTube Music 9.37.2.",
-      "downloadURL": "https://altsource.zynthec.com/ipas/YouTube%20Music%20Ultimate-2.4.1_9.37.2.ipa",
       "screenshots": []
     }
   },
