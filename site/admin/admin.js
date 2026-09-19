@@ -1,0 +1,242 @@
+const $ = (selector, root = document) => root.querySelector(selector);
+const escapeHTML = value => String(value ?? "").replace(/[&<>'"]/g, character => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+})[character]);
+
+const state = { repo: "", branch: "main", token: "", content: null, file: null, edit: null };
+const editableFields = [
+  ["name", "App-Name", "text"],
+  ["developerName", "Entwickler", "text"],
+  ["subtitle", "Kurzbeschreibung", "text"],
+  ["localizedDescription", "Ausführliche Beschreibung", "textarea"],
+  ["category", "Kategorie", "select"],
+  ["tintColor", "Akzentfarbe", "color"],
+  ["marketingVersion", "Angezeigte Version", "text"],
+  ["versionDescription", "Neu in dieser Version", "textarea"],
+  ["screenshots", "Screenshot-URLs (eine pro Zeile)", "textarea"]
+];
+
+class ApiError extends Error {
+  constructor(message, status) { super(message); this.status = status; }
+}
+
+async function api(path, options = {}) {
+  const response = await fetch(`https://api.github.com/repos/${state.repo}${path}`, {
+    ...options,
+    headers: {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${state.token}`,
+      "X-GitHub-Api-Version": "2022-11-28",
+      ...(options.headers || {})
+    }
+  });
+  if (!response.ok) {
+    let message = `GitHub ${response.status}`;
+    try { message = (await response.json()).message || message; } catch {}
+    throw new ApiError(message, response.status);
+  }
+  return response.status === 204 ? null : response.json();
+}
+
+function decode(data) {
+  const bytes = Uint8Array.from(atob(data.replace(/\n/g, "")), character => character.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+function encodeBytes(bytes) {
+  let binary = "";
+  const chunk = 0x8000;
+  for (let offset = 0; offset < bytes.length; offset += chunk) binary += String.fromCharCode(...bytes.subarray(offset, offset + chunk));
+  return btoa(binary);
+}
+
+function encodeJSON(data) {
+  return encodeBytes(new TextEncoder().encode(JSON.stringify(data, null, 2) + "\n"));
+}
+
+async function load() {
+  state.file = await api(`/contents/catalog/content.json?ref=${encodeURIComponent(state.branch)}`);
+  state.content = decode(state.file.content);
+  state.content.localApps ||= {};
+  state.content.uploadedApps ||= [];
+  render();
+}
+
+function records() {
+  const local = Object.entries(state.content.localApps).map(([key, app]) => ({ kind: "local", key, app }));
+  const uploaded = state.content.uploadedApps.map((app, index) => ({ kind: "uploaded", key: index, app }));
+  return [...local, ...uploaded];
+}
+
+function render() {
+  const apps = records();
+  $("#appsList").innerHTML = apps.map(({ kind, key, app }) => `<article class="admin-item" data-kind="${kind}" data-key="${escapeHTML(key)}"><div class="admin-item-mark">${app.iconFile ? "✓" : "IPA"}</div><div><h3>${escapeHTML(app.name || app.ipaFile || key)}</h3><p>${escapeHTML(app.marketingVersion ? `Version ${app.marketingVersion} · ` : "")}${escapeHTML(app.ipaFile || key)}</p></div><span class="chevron">›</span></article>`).join("") || '<div class="empty-shot">Noch keine Apps. Über „App hochladen“ kannst du die erste IPA hinzufügen.</div>';
+}
+
+function defaultApp() {
+  return { name: "", developerName: "zynthec", subtitle: "", localizedDescription: "", category: "utilities", tintColor: "#00C7B7", marketingVersion: "", versionDescription: "Neue Version", screenshots: [], ipaFile: "" };
+}
+
+function field(app, key, label, type) {
+  const value = key === "screenshots" ? (app.screenshots || []).map(item => typeof item === "string" ? item : item.imageURL).join("\n") : app[key] || "";
+  if (type === "textarea") return `<label class="field">${label}<textarea name="${key}">${escapeHTML(value)}</textarea></label>`;
+  if (type === "select") return `<label class="field">${label}<select name="${key}">${["developer", "entertainment", "games", "lifestyle", "music", "other", "photo-video", "social", "utilities"].map(option => `<option ${option === value ? "selected" : ""}>${option}</option>`).join("")}</select></label>`;
+  return `<label class="field">${label}<input name="${key}" type="${type}" value="${escapeHTML(value)}" ${key === "name" ? "required" : ""}></label>`;
+}
+
+function openEditor(kind = "new", key = null) {
+  const record = kind === "new" ? { kind, key, app: defaultApp() } : records().find(item => item.kind === kind && String(item.key) === String(key));
+  if (!record) return;
+  state.edit = { kind: record.kind, key: record.key, original: structuredClone(record.app), app: structuredClone(record.app) };
+  const isNew = kind === "new";
+  $("#editorTitle").textContent = isNew ? "App hochladen" : (record.app.name || "App bearbeiten");
+  $("#editorFields").innerHTML = `${editableFields.map(args => field(record.app, ...args)).join("")}
+    <label class="field">${isNew ? "IPA-Datei" : "Neue IPA-Version (optional)"}<input name="ipa" type="file" accept=".ipa,application/octet-stream" ${isNew ? "required" : ""}></label>
+    <label class="field">${isNew ? "App-Icon als PNG (optional)" : "Neues App-Icon als PNG (optional)"}<input name="icon" type="file" accept="image/png"></label>`;
+  $("#deleteItem").classList.toggle("hidden", isNew);
+  $("#editorStatus").textContent = "";
+  $("#editor").showModal();
+}
+
+function collect() {
+  const form = new FormData($("#editorForm"));
+  const app = state.edit.app;
+  for (const [key, , type] of editableFields) {
+    const value = String(form.get(key) || "").trim();
+    app[key] = key === "screenshots" ? value.split("\n").map(entry => entry.trim()).filter(Boolean) : value;
+  }
+  return { app, ipa: form.get("ipa"), icon: form.get("icon") };
+}
+
+async function ensureRelease() {
+  try { return await api("/releases/tags/apps"); }
+  catch (error) {
+    if (error.status !== 404) throw error;
+    return api("/releases", { method: "POST", body: JSON.stringify({ tag_name: "apps", name: "App downloads", body: "IPA releases used by zynthec Apps." }) });
+  }
+}
+
+async function uploadIPA(file) {
+  const release = await ensureRelease();
+  const existing = release.assets.find(asset => asset.name === file.name);
+  if (existing) await api(`/releases/assets/${existing.id}`, { method: "DELETE" });
+  const uploadURL = release.upload_url.replace("{?name,label}", "") + `?name=${encodeURIComponent(file.name)}`;
+  const response = await fetch(uploadURL, { method: "POST", headers: { Accept: "application/vnd.github+json", Authorization: `Bearer ${state.token}`, "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/octet-stream" }, body: file });
+  if (!response.ok) throw new ApiError((await response.json()).message || "IPA-Upload fehlgeschlagen", response.status);
+}
+
+async function deleteIPA(filename) {
+  if (!filename) return;
+  let release;
+  try { release = await api("/releases/tags/apps"); } catch (error) { if (error.status === 404) return; throw error; }
+  const asset = release.assets.find(item => item.name === filename);
+  if (asset) await api(`/releases/assets/${asset.id}`, { method: "DELETE" });
+}
+
+function safeAssetName(app, file) {
+  const stem = (app.name || app.ipaFile || "app").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "app";
+  return `catalog/assets/admin-${stem}.png`;
+}
+
+async function putFile(path, bytes, message) {
+  let sha;
+  try { sha = (await api(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`)).sha; } catch (error) { if (error.status !== 404) throw error; }
+  await api(`/contents/${path}`, { method: "PUT", body: JSON.stringify({ message, content: encodeBytes(bytes), branch: state.branch, ...(sha ? { sha } : {}) }) });
+}
+
+async function deleteFile(path) {
+  if (!path) return;
+  try {
+    const file = await api(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
+    await api(`/contents/${path}`, { method: "DELETE", body: JSON.stringify({ message: `admin: remove icon ${path}`, sha: file.sha, branch: state.branch }) });
+  } catch (error) { if (error.status !== 404) throw error; }
+}
+
+async function commitContent(message) {
+  const result = await api("/contents/catalog/content.json", { method: "PUT", body: JSON.stringify({ message, content: encodeJSON(state.content), sha: state.file.sha, branch: state.branch }) });
+  state.file.sha = result.content.sha;
+}
+
+async function save() {
+  const { app, ipa, icon } = collect();
+  const isNew = state.edit.kind === "new";
+  $("#editorStatus").textContent = ipa?.size ? "IPA wird hochgeladen …" : "Änderungen werden gespeichert …";
+  try {
+    if (ipa?.size) {
+      await uploadIPA(ipa);
+      if (state.edit.original.ipaFile && state.edit.original.ipaFile !== ipa.name) await deleteIPA(state.edit.original.ipaFile);
+      app.ipaFile = ipa.name;
+    }
+    if (icon?.size) {
+      const path = safeAssetName(app, icon);
+      await putFile(path, new Uint8Array(await icon.arrayBuffer()), `admin: update icon for ${app.name}`);
+      app.iconFile = path;
+    }
+    if (isNew) state.content.uploadedApps.push(app);
+    else if (state.edit.kind === "local") state.content.localApps[state.edit.key] = app;
+    else state.content.uploadedApps[Number(state.edit.key)] = app;
+    await commitContent(`admin: ${isNew ? "add" : "update"} app ${app.name}`);
+    $("#editor").close();
+    render();
+    toast(isNew ? "App hochgeladen – Deployment läuft" : "App gespeichert – Deployment läuft");
+  } catch (error) {
+    $("#editorStatus").textContent = error.message;
+    await load();
+  }
+}
+
+async function remove() {
+  if (!confirm(`„${state.edit.app.name || "Diese App"}“ samt IPA wirklich entfernen?`)) return;
+  $("#editorStatus").textContent = "App und IPA werden entfernt …";
+  try {
+    await deleteIPA(state.edit.app.ipaFile);
+    await deleteFile(state.edit.app.iconFile);
+    if (state.edit.kind === "local") delete state.content.localApps[state.edit.key];
+    else state.content.uploadedApps.splice(Number(state.edit.key), 1);
+    await commitContent(`admin: remove app ${state.edit.app.name}`);
+    $("#editor").close();
+    render();
+    toast("App entfernt – Deployment läuft");
+  } catch (error) {
+    $("#editorStatus").textContent = error.message;
+    await load();
+  }
+}
+
+function toast(message) {
+  const element = $("#toast");
+  element.textContent = message;
+  element.classList.add("show");
+  setTimeout(() => element.classList.remove("show"), 2800);
+}
+
+$("#connect").onclick = async () => {
+  state.repo = $("#repo").value.trim();
+  state.branch = $("#branch").value.trim();
+  state.token = $("#token").value.trim();
+  $("#loginStatus").textContent = "Admin-Zugang wird geprüft …";
+  try {
+    const repository = await api("");
+    if (!repository.permissions?.push) throw new Error("Der Admin-Token hat keine Schreibberechtigung.");
+    sessionStorage.setItem("zynthecAdmin", JSON.stringify({ repo: state.repo, branch: state.branch, token: state.token }));
+    await load();
+    $("#loginPanel").classList.add("hidden");
+    $("#dashboard").classList.remove("hidden");
+    $("#logout").classList.remove("hidden");
+  } catch (error) { $("#loginStatus").textContent = error.message; }
+};
+
+$("#logout").onclick = () => { sessionStorage.removeItem("zynthecAdmin"); location.reload(); };
+$("#addApp").onclick = () => openEditor();
+document.addEventListener("click", event => {
+  const item = event.target.closest("[data-kind]");
+  if (item) openEditor(item.dataset.kind, item.dataset.key);
+  if (event.target.closest(".dialog-close")) $("#editor").close();
+});
+$("#editorForm").addEventListener("submit", event => { event.preventDefault(); save(); });
+$("#deleteItem").onclick = remove;
+
+try {
+  const saved = JSON.parse(sessionStorage.getItem("zynthecAdmin"));
+  if (saved) { Object.assign(state, saved); $("#repo").value = state.repo; $("#branch").value = state.branch; $("#token").value = state.token; $("#connect").click(); }
+} catch {}

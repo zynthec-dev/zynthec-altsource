@@ -1,0 +1,50 @@
+import json
+import subprocess
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DIST = ROOT / "dist"
+
+
+class BuildTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        if not (DIST / "source.json").exists():
+            subprocess.run(["python3", "scripts/build.py"], cwd=ROOT, check=True)
+
+    def test_source_has_valid_local_app(self):
+        source = json.loads((DIST / "source.json").read_text())
+        self.assertEqual(len(source["apps"]), 3)
+        app = next(app for app in source["apps"] if app["bundleIdentifier"] == "de.renewitt.mipet")
+        self.assertEqual(app["versions"][0]["version"], "0.1.0")
+        self.assertEqual(app["versions"][0]["marketingVersion"], "0.3-beta")
+        self.assertTrue(app["versions"][0]["downloadURL"].endswith(".ipa"))
+        self.assertGreater(app["versions"][0]["size"], 0)
+
+    def test_filename_versions_and_names_are_separate(self):
+        source = json.loads((DIST / "source.json").read_text())
+        versions = {
+            app["name"]: app["versions"][0]["marketingVersion"]
+            for app in source["apps"]
+        }
+        self.assertEqual(versions["liveMic"], "1.0")
+        self.assertEqual(versions["YouTube Music Ultimate"], "2.4.1_9.37.2")
+
+    def test_feed_has_no_private_origin_metadata(self):
+        source = json.loads((DIST / "source.json").read_text())
+        self.assertTrue(source["apps"])
+        self.assertTrue(all("_origin" not in app for app in source["apps"]))
+
+    def test_admin_is_built_without_storefront_or_installer_artifacts(self):
+        self.assertTrue((DIST / "admin" / "index.html").exists())
+        self.assertFalse((DIST / "index.html").exists())
+        self.assertFalse((DIST / "app.js").exists())
+        self.assertFalse((DIST / "styles.css").exists())
+        self.assertFalse((DIST / "data" / "catalog.json").exists())
+        self.assertFalse((DIST / "data" / "loaders.json").exists())
+        self.assertFalse((DIST / "zloader.mobileconfig").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

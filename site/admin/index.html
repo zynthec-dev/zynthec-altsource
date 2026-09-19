@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071b1c">
+  <title>zynthec App-Verwaltung</title>
+  <link rel="icon" href="/assets/source-icon.png">
+  <link rel="stylesheet" href="/admin/base.css">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="aurora"></div>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <a class="brand" href="/admin/"><img src="/assets/source-icon.png" alt=""><span><strong>zynthec Apps</strong><small>App-Verwaltung</small></span></a>
+      <button class="secondary-button hidden" id="logout">Abmelden</button>
+    </header>
+
+    <section class="login glass" id="loginPanel">
+      <p class="eyebrow">ADMIN-BEREICH</p>
+      <h1>Apps verwalten.</h1>
+        <p>Verbinde einmal deinen geschützten Admin-Zugang. Danach kannst du Apps hochladen, bearbeiten und entfernen. Der Token bleibt ausschließlich in diesem Browser-Tab.</p>
+      <label>Admin-Token<input id="token" type="password" placeholder="github_pat_…" autocomplete="off"></label>
+      <details><summary>Erweiterte Verbindung</summary><label>Repository<input id="repo" value="zynthec-dev/zynthec-altsource" autocomplete="off"></label><label>Branch<input id="branch" value="main" autocomplete="off"></label></details>
+      <button class="primary-button" id="connect">App-Verwaltung öffnen</button>
+      <p class="form-status" id="loginStatus"></p>
+    </section>
+
+    <section class="dashboard hidden" id="dashboard">
+      <div class="dashboard-title"><div><p class="eyebrow">DEINE SOURCE</p><h1>Apps</h1><p>IPA-Dateien, Namen, Beschreibungen, Farben, Icons und Screenshots an einem Ort verwalten.</p></div><button class="primary-button" id="addApp">App hochladen</button></div>
+      <div class="admin-list" id="appsList"></div>
+    </section>
+  </main>
+
+  <dialog id="editor">
+    <form method="dialog" id="editorForm">
+      <button type="button" class="dialog-close">×</button>
+      <div class="editor-body">
+        <p class="eyebrow" id="editorEyebrow">APP</p>
+        <h2 id="editorTitle">App bearbeiten</h2>
+        <div id="editorFields"></div>
+        <div class="editor-actions"><button type="button" class="danger-button hidden" id="deleteItem">App entfernen</button><span></span><button value="cancel" class="secondary-button">Abbrechen</button><button type="submit" value="default" class="primary-button">Speichern</button></div>
+        <p class="form-status" id="editorStatus"></p>
+      </div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast"></div>
+  <script src="/admin/admin.js" type="module"></script>
+</body>
+</html>

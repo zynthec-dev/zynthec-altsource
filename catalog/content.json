@@ -1,0 +1,55 @@
+{
+  "localApps": {
+    "de.renewitt.mipet": {
+      "ipaFile": "miPet-0.3-beta.ipa",
+      "name": "miPet",
+      "developerName": "zynthec",
+      "subtitle": "Dein kleiner Begleiter für iPhone und iPad.",
+      "localizedDescription": "miPet bringt einen liebevoll animierten Begleiter auf dein Gerät. Diese Beta wird direkt von zynthec veröffentlicht.",
+      "category": "lifestyle",
+      "tintColor": "#00C7B7",
+      "iconFile": "catalog/assets/mipet-icon.png",
+      "versionDescription": "Erste öffentliche Beta von miPet.",
+      "downloadURL": "https://altsource.zynthec.com/ipas/miPet-0.3-beta.ipa",
+      "screenshots": []
+    },
+    "com.zynthec.liveMic": {
+      "ipaFile": "liveMic-1.0.ipa",
+      "name": "liveMic",
+      "developerName": "zynthec",
+      "subtitle": "Dein Mikrofon, direkt und unkompliziert.",
+      "localizedDescription": "liveMic ist eine kompakte Audio-App von zynthec.",
+      "category": "utilities",
+      "tintColor": "#00C7B7",
+      "iconFile": "catalog/assets/livemic-icon.png",
+      "versionDescription": "Version 1.0 von liveMic.",
+      "downloadURL": "https://altsource.zynthec.com/ipas/liveMic-1.0.ipa",
+      "screenshots": []
+    },
+    "com.google.ios.youtubemusic": {
+      "ipaFile": "YouTube Music Ultimate-2.4.1_9.37.2.ipa",
+      "name": "YouTube Music Ultimate",
+      "developerName": "Google / Ultimate",
+      "subtitle": "YouTube Music mit den Ultimate-Erweiterungen.",
+      "localizedDescription": "YouTube Music Ultimate kombiniert die YouTube-Music-App mit zusätzlichen Ultimate-Funktionen.",
+      "category": "music",
+      "tintColor": "#FF0033",
+      "iconFile": "catalog/assets/youtube-music-ultimate-icon.png",
+      "versionDescription": "Ultimate 2.4.1 auf Basis von YouTube Music 9.37.2.",
+      "downloadURL": "https://altsource.zynthec.com/ipas/YouTube%20Music%20Ultimate-2.4.1_9.37.2.ipa",
+      "screenshots": []
+    }
+  },
+  "uploadedApps": [],
+  "manualApps": [],
+  "news": [
+    {
+      "identifier": "welcome-to-zynthec-apps",
+      "title": "Willkommen bei zynthec Apps",
+      "caption": "Die offizielle Source für Apps von zynthec.",
+      "date": "2026-09-19",
+      "tintColor": "#00C7B7",
+      "url": "https://altsource.zynthec.com"
+    }
+  ]
+}
