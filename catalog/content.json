@@ -13,15 +13,15 @@
       "screenshots": []
     },
     "com.zynthec.liveMic": {
-      "ipaFile": "liveMic-1.0.3.ipa",
+      "ipaFile": "liveMic-1.0.5.ipa",
       "name": "liveMic",
       "developerName": "zynthec",
       "subtitle": "Dein Mikrofon, direkt und unkompliziert.",
-      "localizedDescription": "liveMic streamt Mikrofon-Audio direkt im lokalen Netzwerk. iPhone, iPad und Apple Watch können eigenständig live gehen und aktive Sender per Bonjour entdecken.",
+      "localizedDescription": "liveMic streamt Mikrofon-Audio direkt im lokalen Netzwerk. iPhone, iPad und Apple Watch bleiben optional im Hintergrund bereit und lassen sich von anderen liveMic-Clients direkt aktivieren.",
       "category": "utilities",
       "tintColor": "#00C7B7",
       "iconFile": "catalog/assets/livemic-icon.png",
-      "versionDescription": "Version 1.0.3 ergänzt den eigenständigen Watch-Stream, automatische LAN-Erkennung und die Wiederaufnahme nach erlaubten Audio-Unterbrechungen.",
+      "versionDescription": "Version 1.0.5 ergänzt einen standardisierten WAV-Livestream für VLC und andere Audioplayer sowie die automatische Listener-Wiederherstellung und direkte LAN-Steuerung.",
       "screenshots": []
     },
     "com.google.ios.youtubemusic": {
