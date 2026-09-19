@@ -1,5 +1,23 @@
 {
   "localApps": {
+    "com.zynthec.devicehubremote": {
+      "ipaFile": "DeviceHubRemote-0.1.0.ipa",
+      "name": "Device Hub Remote",
+      "developerName": "zynthec",
+      "subtitle": "Deine iDevices über deinen Mac verwalten.",
+      "localizedDescription": "Verbindet dein iPhone per verschlüsselter Verbindung mit RemoteHubHost auf deinem laufenden Mac. Verwalte dort freigegebene Geräte: Apps anzeigen, starten, beenden und signierte IPAs installieren, Konfigurationsprofile installieren, Erscheinungsbild ändern und neu starten. Zugriff im Heimnetz oder über eine bestehende VPN-Verbindung. Erfordert den eingerichteten Mac-Host, Xcode und mit dem Mac gekoppelte Geräte. Bildschirmübertragung, Touch-Fernsteuerung, Bildschirmvorhang und Ausschalten sind in dieser Version nicht enthalten. Installation über AltStore oder SideStore benötigt eine eigene Signierung.",
+      "category": "utilities",
+      "tintColor": "#00C7B7",
+      "iconFile": "catalog/assets/devicehub-icon.png",
+      "versionDescription": "Erste Version 0.1.0 mit Geräteverwaltung, App-Steuerung und IPA-Upload zum Mac-Host.",
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSLocalNetworkUsageDescription": "Verbindet dein iPhone mit deinem MacBook, um freigegebene Geräte zu verwalten."
+        }
+      },
+      "screenshots": []
+    },
     "de.renewitt.mipet": {
       "ipaFile": "miPet-0.3-beta.ipa",
       "name": "miPet",

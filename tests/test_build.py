@@ -58,10 +58,24 @@ class BuildTests(unittest.TestCase):
         content = json.loads((ROOT / "catalog" / "content.json").read_text())
         filenames = {app.get("ipaFile") for app in content["localApps"].values()}
         self.assertEqual(filenames, {
+            "DeviceHubRemote-0.1.0.ipa",
             "miPet-0.3-beta.ipa",
             "liveMic-1.0.5.ipa",
             "YouTube-Music-Ultimate-2.4.1_9.37.2-no-cast.ipa",
         })
+
+    @unittest.skipUnless((ROOT / "DeviceHubRemote-0.1.0.ipa").exists(), "Device Hub release asset is not available")
+    def test_devicehub_metadata(self):
+        import hashlib
+        source = json.loads((DIST / "source.json").read_text())
+        app = next(app for app in source["apps"] if app["bundleIdentifier"] == "com.zynthec.devicehubremote")
+        self.assertEqual(app["name"], "Device Hub Remote")
+        version = app["versions"][0]
+        self.assertEqual(version["version"], "0.1.0")
+        self.assertEqual(version["minOSVersion"], "17.2")
+        self.assertEqual(version["sha256"], hashlib.sha256((ROOT / "DeviceHubRemote-0.1.0.ipa").read_bytes()).hexdigest())
+        self.assertIn("NSLocalNetworkUsageDescription", app["appPermissions"]["privacy"])
+        self.assertTrue((DIST / "assets/apps/com.zynthec.devicehubremote.png").is_file())
 
     def test_admin_is_built_without_storefront_or_installer_artifacts(self):
         self.assertTrue((DIST / "admin" / "index.html").exists())
