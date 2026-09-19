@@ -25,7 +25,12 @@ jobs:
       - name: Download owned IPA release assets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release download apps --pattern '*.ipa' --dir . || true
+        run: |
+          if gh release view apps >/dev/null 2>&1; then
+            gh release download apps --pattern '*.ipa' --dir .
+          else
+            echo "::warning::Release 'apps' does not exist yet; deploying the admin page with an empty source."
+          fi
       - name: Build source and admin page
         run: python3 scripts/build.py
       - name: Validate output

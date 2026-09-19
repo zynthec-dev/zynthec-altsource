@@ -13,15 +13,25 @@ class BuildTests(unittest.TestCase):
         if not (DIST / "source.json").exists():
             subprocess.run(["python3", "scripts/build.py"], cwd=ROOT, check=True)
 
-    def test_source_has_valid_local_app(self):
+    def test_source_contains_every_available_ipa(self):
         source = json.loads((DIST / "source.json").read_text())
-        self.assertEqual(len(source["apps"]), 3)
+        ipas = list(ROOT.glob("*.ipa"))
+        self.assertEqual(len(source["apps"]), len(ipas))
+        for app in source["apps"]:
+            self.assertTrue(app["versions"][0]["downloadURL"].endswith(".ipa"))
+            self.assertGreater(app["versions"][0]["size"], 0)
+
+    @unittest.skipUnless((ROOT / "miPet-0.3-beta.ipa").exists(), "miPet release asset is not available")
+    def test_mipet_metadata(self):
+        source = json.loads((DIST / "source.json").read_text())
         app = next(app for app in source["apps"] if app["bundleIdentifier"] == "de.renewitt.mipet")
         self.assertEqual(app["versions"][0]["version"], "0.1.0")
         self.assertEqual(app["versions"][0]["marketingVersion"], "0.3-beta")
-        self.assertTrue(app["versions"][0]["downloadURL"].endswith(".ipa"))
-        self.assertGreater(app["versions"][0]["size"], 0)
 
+    @unittest.skipUnless(
+        (ROOT / "liveMic-1.0.ipa").exists() and (ROOT / "YouTube Music Ultimate-2.4.1_9.37.2.ipa").exists(),
+        "liveMic and YouTube Music release assets are not available",
+    )
     def test_filename_versions_and_names_are_separate(self):
         source = json.loads((DIST / "source.json").read_text())
         versions = {
@@ -33,8 +43,16 @@ class BuildTests(unittest.TestCase):
 
     def test_feed_has_no_private_origin_metadata(self):
         source = json.loads((DIST / "source.json").read_text())
-        self.assertTrue(source["apps"])
         self.assertTrue(all("_origin" not in app for app in source["apps"]))
+
+    def test_configured_apps_have_release_filenames(self):
+        content = json.loads((ROOT / "catalog" / "content.json").read_text())
+        filenames = {app.get("ipaFile") for app in content["localApps"].values()}
+        self.assertEqual(filenames, {
+            "miPet-0.3-beta.ipa",
+            "liveMic-1.0.ipa",
+            "YouTube Music Ultimate-2.4.1_9.37.2.ipa",
+        })
 
     def test_admin_is_built_without_storefront_or_installer_artifacts(self):
         self.assertTrue((DIST / "admin" / "index.html").exists())
