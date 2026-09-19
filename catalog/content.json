@@ -31,7 +31,7 @@
       "screenshots": []
     },
     "com.zynthec.liveMic": {
-      "ipaFile": "liveMic-1.0.7.ipa",
+      "ipaFile": "liveMic-1.0.8.ipa",
       "name": "liveMic",
       "developerName": "zynthec",
       "subtitle": "Dein Mikrofon, direkt und unkompliziert.",
@@ -39,7 +39,7 @@
       "category": "utilities",
       "tintColor": "#00C7B7",
       "iconFile": "catalog/assets/livemic-icon.png",
-      "versionDescription": "Version 1.0.7 erlaubt lokale HTTP-Steuerung per ATS-Ausnahme und übergibt den laufenden Bereitschafts-Audioengine ohne Unterbrechung an die Mikrofonaufnahme. Fernstart, Hub-Pegelsteuerung und VLC-WAV-Stream sind enthalten.",
+      "versionDescription": "Version 1.0.8 repariert die Mikrofonerkennung beim Wechsel aus der Hintergrundbereitschaft. Fernstart, Hub-Pegelsteuerung und VLC-WAV-Stream bleiben enthalten.",
       "screenshots": []
     },
     "com.google.ios.youtubemusic": {
