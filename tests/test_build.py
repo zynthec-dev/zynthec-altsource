@@ -29,7 +29,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(app["versions"][0]["marketingVersion"], "0.3-beta")
 
     @unittest.skipUnless(
-        (ROOT / "liveMic-1.0.1.ipa").exists() and (ROOT / "YouTube.Music.Ultimate-2.4.1_9.37.2.ipa").exists(),
+        (ROOT / "liveMic-1.0.2.ipa").exists() and (ROOT / "YouTube.Music.Ultimate-2.4.1_9.37.2-castfix1.ipa").exists(),
         "liveMic and YouTube Music release assets are not available",
     )
     def test_filename_versions_and_names_are_separate(self):
@@ -38,8 +38,8 @@ class BuildTests(unittest.TestCase):
             app["name"]: app["versions"][0]["marketingVersion"]
             for app in source["apps"]
         }
-        self.assertEqual(versions["liveMic"], "1.0.1")
-        self.assertEqual(versions["YouTube Music Ultimate"], "2.4.1_9.37.2")
+        self.assertEqual(versions["liveMic"], "1.0.2")
+        self.assertEqual(versions["YouTube Music Ultimate"], "2.4.1_9.37.2-castfix1")
 
     def test_feed_has_no_private_origin_metadata(self):
         source = json.loads((DIST / "source.json").read_text())
@@ -59,8 +59,8 @@ class BuildTests(unittest.TestCase):
         filenames = {app.get("ipaFile") for app in content["localApps"].values()}
         self.assertEqual(filenames, {
             "miPet-0.3-beta.ipa",
-            "liveMic-1.0.1.ipa",
-            "YouTube.Music.Ultimate-2.4.1_9.37.2.ipa",
+            "liveMic-1.0.2.ipa",
+            "YouTube.Music.Ultimate-2.4.1_9.37.2-castfix1.ipa",
         })
 
     def test_admin_is_built_without_storefront_or_installer_artifacts(self):

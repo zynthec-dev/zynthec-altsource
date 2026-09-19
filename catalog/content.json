@@ -13,7 +13,7 @@
       "screenshots": []
     },
     "com.zynthec.liveMic": {
-      "ipaFile": "liveMic-1.0.1.ipa",
+      "ipaFile": "liveMic-1.0.2.ipa",
       "name": "liveMic",
       "developerName": "zynthec",
       "subtitle": "Dein Mikrofon, direkt und unkompliziert.",
@@ -21,11 +21,11 @@
       "category": "utilities",
       "tintColor": "#00C7B7",
       "iconFile": "catalog/assets/livemic-icon.png",
-      "versionDescription": "Version 1.0.1 von liveMic mit korrigierter Apple-Watch-Installation.",
+      "versionDescription": "Version 1.0.2 korrigiert Companion-ID und Watch-Bundle-ID für die Apple-Watch-Installation.",
       "screenshots": []
     },
     "com.google.ios.youtubemusic": {
-      "ipaFile": "YouTube.Music.Ultimate-2.4.1_9.37.2.ipa",
+      "ipaFile": "YouTube.Music.Ultimate-2.4.1_9.37.2-castfix1.ipa",
       "name": "YouTube Music Ultimate",
       "developerName": "Google / Ultimate",
       "subtitle": "YouTube Music mit den Ultimate-Erweiterungen.",
@@ -33,7 +33,8 @@
       "category": "music",
       "tintColor": "#FF0033",
       "iconFile": "catalog/assets/youtube-music-ultimate-icon.png",
-      "versionDescription": "Ultimate 2.4.1 auf Basis von YouTube Music 9.37.2.",
+      "marketingVersion": "2.4.1_9.37.2-castfix1",
+      "versionDescription": "Cast Fix 1 ergänzt die Google-Cast-Bonjour-Dienste für die lokale Gerätesuche.",
       "appPermissions": {
         "entitlements": [
           "aps-environment",
