@@ -56,6 +56,11 @@ class BuildTests(unittest.TestCase):
 
     def test_admin_is_built_without_storefront_or_installer_artifacts(self):
         self.assertTrue((DIST / "admin" / "index.html").exists())
+        admin_html = (DIST / "admin" / "index.html").read_text()
+        self.assertNotIn('href="/admin/', admin_html)
+        self.assertNotIn('src="/admin/', admin_html)
+        self.assertNotIn('href="/assets/', admin_html)
+        self.assertNotIn('src="/assets/', admin_html)
         self.assertFalse((DIST / "index.html").exists())
         self.assertFalse((DIST / "app.js").exists())
         self.assertFalse((DIST / "styles.css").exists())
