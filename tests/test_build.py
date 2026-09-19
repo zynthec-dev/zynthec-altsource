@@ -16,7 +16,12 @@ class BuildTests(unittest.TestCase):
     def test_source_contains_every_available_ipa(self):
         source = json.loads((DIST / "source.json").read_text())
         ipas = list(ROOT.glob("*.ipa"))
-        self.assertEqual(len(source["apps"]), len(ipas))
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("source_build", ROOT / "scripts/build.py")
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+        bundle_ids = {builder.plist_from_ipa(ipa)[0]["CFBundleIdentifier"] for ipa in ipas}
+        self.assertEqual({app["bundleIdentifier"] for app in source["apps"]}, bundle_ids)
         for app in source["apps"]:
             self.assertTrue(app["versions"][0]["downloadURL"].endswith(".ipa"))
             self.assertGreater(app["versions"][0]["size"], 0)
@@ -38,7 +43,8 @@ class BuildTests(unittest.TestCase):
             app["name"]: app["versions"][0]["marketingVersion"]
             for app in source["apps"]
         }
-        self.assertEqual(versions["liveMic"], "1.0.5")
+        latest_live_mic = sorted(ROOT.glob("liveMic-*.ipa"), key=lambda p: tuple(int(n) for n in p.stem.removeprefix("liveMic-").split(".")))[-1]
+        self.assertEqual(versions["liveMic"], latest_live_mic.stem.removeprefix("liveMic-"))
         self.assertEqual(versions["YouTube Music Ultimate"], "2.4.1_9.37.2-no-cast")
 
     def test_feed_has_no_private_origin_metadata(self):
