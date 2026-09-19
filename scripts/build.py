@@ -113,7 +113,7 @@ def ipa_app(ipa: Path, settings: dict[str, Any], content: dict[str, Any]) -> dic
         "category": override.get("category", "other"),
         "screenshots": override.get("screenshots", []),
         "versions": [version_item],
-        "appPermissions": {"entitlements": [], "privacy": {}},
+        "appPermissions": override.get("appPermissions", {"entitlements": [], "privacy": {}}),
         "_origin": {"name": "zynthec", "url": settings["sourceURL"]},
     }
 

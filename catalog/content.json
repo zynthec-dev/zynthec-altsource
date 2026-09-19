@@ -13,7 +13,7 @@
       "screenshots": []
     },
     "com.zynthec.liveMic": {
-      "ipaFile": "liveMic-1.0.ipa",
+      "ipaFile": "liveMic-1.0.1.ipa",
       "name": "liveMic",
       "developerName": "zynthec",
       "subtitle": "Dein Mikrofon, direkt und unkompliziert.",
@@ -21,7 +21,7 @@
       "category": "utilities",
       "tintColor": "#00C7B7",
       "iconFile": "catalog/assets/livemic-icon.png",
-      "versionDescription": "Version 1.0 von liveMic.",
+      "versionDescription": "Version 1.0.1 von liveMic mit korrigierter Apple-Watch-Installation.",
       "screenshots": []
     },
     "com.google.ios.youtubemusic": {
@@ -34,6 +34,30 @@
       "tintColor": "#FF0033",
       "iconFile": "catalog/assets/youtube-music-ultimate-icon.png",
       "versionDescription": "Ultimate 2.4.1 auf Basis von YouTube Music 9.37.2.",
+      "appPermissions": {
+        "entitlements": [
+          "aps-environment",
+          "com.apple.developer.siri",
+          "com.apple.developer.carplay-audio",
+          "com.apple.developer.networking.multicast",
+          "com.apple.developer.networking.wifi-info",
+          "com.apple.developer.mediasetup",
+          "com.apple.developer.coremedia.allow-alternate-video-decoder-selection",
+          "com.apple.security.application-groups",
+          "com.apple.developer.associated-domains",
+          "keychain-access-groups"
+        ],
+        "privacy": {
+          "NSBluetoothAlwaysUsageDescription": "YouTube Music uses Bluetooth to locate and connect to Chromecast and other devices.",
+          "NSBluetoothPeripheralUsageDescription": "YouTube Music uses Bluetooth to locate and connect to Chromecast and other devices.",
+          "NSCameraUsageDescription": "To take a profile picture, allow YouTube Music to access your camera.",
+          "NSContactsUsageDescription": "This will allow you to invite your family into your membership plan.",
+          "NSLocalNetworkUsageDescription": "Access to your network allows YouTube Music to discover and connect to devices such as your TV.",
+          "NSMicrophoneUsageDescription": "This lets you include audio with your videos.",
+          "NSPhotoLibraryAddUsageDescription": "To save images, allow YouTube Music to access your photo library.",
+          "NSPhotoLibraryUsageDescription": "To choose a profile picture, allow YouTube Music to access your photos."
+        }
+      },
       "screenshots": []
     }
   },

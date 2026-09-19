@@ -29,7 +29,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(app["versions"][0]["marketingVersion"], "0.3-beta")
 
     @unittest.skipUnless(
-        (ROOT / "liveMic-1.0.ipa").exists() and (ROOT / "YouTube Music Ultimate-2.4.1_9.37.2.ipa").exists(),
+        (ROOT / "liveMic-1.0.1.ipa").exists() and (ROOT / "YouTube.Music.Ultimate-2.4.1_9.37.2.ipa").exists(),
         "liveMic and YouTube Music release assets are not available",
     )
     def test_filename_versions_and_names_are_separate(self):
@@ -38,19 +38,28 @@ class BuildTests(unittest.TestCase):
             app["name"]: app["versions"][0]["marketingVersion"]
             for app in source["apps"]
         }
-        self.assertEqual(versions["liveMic"], "1.0")
+        self.assertEqual(versions["liveMic"], "1.0.1")
         self.assertEqual(versions["YouTube Music Ultimate"], "2.4.1_9.37.2")
 
     def test_feed_has_no_private_origin_metadata(self):
         source = json.loads((DIST / "source.json").read_text())
         self.assertTrue(all("_origin" not in app for app in source["apps"]))
 
+    def test_youtube_music_declares_cast_permissions(self):
+        source = json.loads((DIST / "source.json").read_text())
+        app = next(app for app in source["apps"] if app["bundleIdentifier"] == "com.google.ios.youtubemusic")
+        entitlements = set(app["appPermissions"]["entitlements"])
+        self.assertIn("com.apple.developer.networking.multicast", entitlements)
+        self.assertIn("com.apple.developer.networking.wifi-info", entitlements)
+        self.assertIn("com.apple.developer.carplay-audio", entitlements)
+        self.assertIn("NSLocalNetworkUsageDescription", app["appPermissions"]["privacy"])
+
     def test_configured_apps_have_release_filenames(self):
         content = json.loads((ROOT / "catalog" / "content.json").read_text())
         filenames = {app.get("ipaFile") for app in content["localApps"].values()}
         self.assertEqual(filenames, {
             "miPet-0.3-beta.ipa",
-            "liveMic-1.0.ipa",
+            "liveMic-1.0.1.ipa",
             "YouTube.Music.Ultimate-2.4.1_9.37.2.ipa",
         })
 
