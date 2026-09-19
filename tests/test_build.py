@@ -34,7 +34,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(app["versions"][0]["marketingVersion"], "0.3-beta")
 
     @unittest.skipUnless(
-        (ROOT / "liveMic-1.0.6.ipa").exists() and (ROOT / "YouTube-Music-Ultimate-2.4.1_9.37.2-no-cast.ipa").exists(),
+        (ROOT / "liveMic-1.0.7.ipa").exists() and (ROOT / "YouTube-Music-Ultimate-2.4.1_9.37.2-no-cast.ipa").exists(),
         "liveMic and YouTube Music release assets are not available",
     )
     def test_filename_versions_and_names_are_separate(self):
@@ -66,7 +66,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(filenames, {
             "DeviceHubRemote-0.1.0.ipa",
             "miPet-0.3-beta.ipa",
-            "liveMic-1.0.6.ipa",
+            "liveMic-1.0.7.ipa",
             "YouTube-Music-Ultimate-2.4.1_9.37.2-no-cast.ipa",
         })
 
