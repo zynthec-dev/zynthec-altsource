@@ -12,18 +12,6 @@
       "versionDescription": "Erste öffentliche Beta von miPet.",
       "screenshots": []
     },
-    "com.zynthec.liveMic": {
-      "ipaFile": "liveMic-1.0.8.ipa",
-      "name": "liveMic",
-      "developerName": "zynthec",
-      "subtitle": "Dein Mikrofon, direkt und unkompliziert.",
-      "localizedDescription": "liveMic streamt Mikrofon-Audio direkt im lokalen Netzwerk. iPhone, iPad und Apple Watch bleiben optional im Hintergrund bereit und lassen sich von anderen liveMic-Clients direkt aktivieren.",
-      "category": "utilities",
-      "tintColor": "#00C7B7",
-      "iconFile": "catalog/assets/livemic-icon.png",
-      "versionDescription": "Version 1.0.8 repariert die Mikrofonerkennung beim Wechsel aus der Hintergrundbereitschaft. Fernstart, Hub-Pegelsteuerung und VLC-WAV-Stream bleiben enthalten.",
-      "screenshots": []
-    },
     "com.google.ios.youtubemusic": {
       "ipaFile": "YouTube-Music-Ultimate-2.4.1_9.37.2-no-cast.ipa",
       "name": "YouTube Music Ultimate",
