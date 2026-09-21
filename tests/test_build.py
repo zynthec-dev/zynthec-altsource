@@ -47,6 +47,12 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(versions["liveMic"], latest_live_mic.stem.removeprefix("liveMic-"))
         self.assertEqual(versions["YouTube Music Ultimate"], "2.4.1_9.37.2-no-cast")
 
+    def test_featured_apps_are_unique_when_old_releases_are_retained(self):
+        source = json.loads((DIST / "source.json").read_text())
+        featured = source["featuredApps"]
+        self.assertEqual(len(featured), len(set(featured)))
+        self.assertTrue(set(featured).issubset({app["bundleIdentifier"] for app in source["apps"]}))
+
     def test_feed_has_no_private_origin_metadata(self):
         source = json.loads((DIST / "source.json").read_text())
         self.assertTrue(all("_origin" not in app for app in source["apps"]))

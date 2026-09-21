@@ -47,21 +47,21 @@
       "screenshots": []
     },
     "com.zynthec.zloader": {
-      "ipaFile": "zLoader-0.1.0-unsigned.ipa",
+      "ipaFile": "zLoader-0.1.1-unsigned.ipa",
       "name": "zLoader",
       "developerName": "zynthec",
       "subtitle": "Lokale IPA-Bibliothek und Signierung für iOS 27.",
-      "localizedDescription": "zLoader verwaltet, untersucht, bearbeitet und signiert IPA-Dateien lokal auf dem Gerät. Vorabversion: direkte Geräteinstallation, Tunnel und App-Refresh sind noch nicht verfügbar. Die öffentliche IPA ist unsigniert und muss vor der Installation mit einer eigenen Identität signiert werden.",
+      "localizedDescription": "zLoader verwaltet, untersucht, bearbeitet und signiert IPA-Dateien lokal. Konto- und Teamauswahl für Apple-Sitzungen oder API-Schlüssel; On-device RPPairing mit PIN-Bestätigung. Vorabversion: Live-Konto-Signierung und Pairing am echten Gerät noch zu prüfen. Direkte Installation, Tunnel und App-Refresh sind noch nicht verfügbar. Öffentliche IPA selbst signieren.",
       "category": "utilities",
       "tintColor": "#2366E8",
       "iconFile": "catalog/assets/zloader-icon.png",
-      "marketingVersion": "0.1.0",
-      "versionDescription": "Erste Vorabversion für iOS 27+: IPA-Bibliothek, Import, Inspektion, Metadatenänderungen, lokale Signierung mit importierten Identitäten und Provisioning über API-Schlüssel. Apple-ID-Anmeldung mit 2FA vorhanden; echte Kontoanmeldung noch nicht vollständig verifiziert und noch nicht mit der Signierautomatik verbunden. Direkte Geräteinstallation, Tunnel und App-Refresh noch nicht implementiert. Unsigned: vor Installation selbst signieren.",
+      "marketingVersion": "0.1.1",
+      "versionDescription": "Vorabversion: Apple-Konto und Team beim Signieren auswählbar; gespeicherte Sitzungen an die Provisioning-Pipeline angeschlossen. On-device RPPairing mit PIN in den Entwicklereinstellungen, sicherer Speicherung, Abbruch und Zeitlimit. 28 Kern-Tests und vier UI-Prüfungen erfolgreich. Echte Apple-Konto-Signierung sowie Pairing am iPhone müssen noch live verifiziert werden. Installationstransport, Tunnel und App-Refresh bleiben offen. Öffentliche IPA vor Installation selbst signieren.",
       "screenshots": [],
       "appPermissions": {
         "entitlements": [],
         "privacy": {
-          "NSLocalNetworkUsageDescription": "Share only the IPA packages you select with devices on your local network while the server is enabled.",
+          "NSLocalNetworkUsageDescription": "Pair directly with your device when you start pairing, or share selected IPA packages while the local server is enabled.",
           "NSFaceIDUsageDescription": "Protect your developer credentials and signing identity management."
         }
       }

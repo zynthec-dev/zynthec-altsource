@@ -164,7 +164,7 @@ def build() -> None:
         "subtitle": settings["subtitle"], "description": settings["description"],
         "sourceURL": settings["sourceURL"], "website": settings["website"],
         "iconURL": settings["iconURL"], "tintColor": settings["tintColor"],
-        "featuredApps": [app["bundleIdentifier"] for app in local[:5]],
+        "featuredApps": list(dict.fromkeys(app["bundleIdentifier"] for app in local))[:5],
         "apps": feed_apps, "news": content.get("news", [])
     }
     write_json(DIST / "source.json", feed)
