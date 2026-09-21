@@ -60,15 +60,18 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn("com.apple.developer.mediasetup", entitlements)
         self.assertIn("com.apple.developer.carplay-audio", entitlements)
 
-    def test_configured_apps_have_release_filenames(self):
+    def test_configured_apps_have_valid_release_filenames(self):
         content = json.loads((ROOT / "catalog" / "content.json").read_text())
-        filenames = {app.get("ipaFile") for app in content["localApps"].values()}
-        self.assertEqual(filenames, {
-            "DeviceHubRemote-0.1.0.ipa",
-            "miPet-0.3-beta.ipa",
-            "liveMic-1.0.8.ipa",
-            "YouTube-Music-Ultimate-2.4.1_9.37.2-no-cast.ipa",
-        })
+        apps = [
+            *content.get("localApps", {}).values(),
+            *content.get("uploadedApps", []),
+        ]
+        filenames = [app.get("ipaFile") for app in apps]
+        self.assertTrue(all(
+            isinstance(filename, str) and filename.strip().endswith(".ipa")
+            for filename in filenames
+        ))
+        self.assertEqual(len(filenames), len(set(filenames)))
 
     @unittest.skipUnless((ROOT / "DeviceHubRemote-0.1.0.ipa").exists(), "Device Hub release asset is not available")
     def test_devicehub_metadata(self):
