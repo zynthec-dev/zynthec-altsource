@@ -65,6 +65,18 @@ class BuildTests(unittest.TestCase):
         source = json.loads((DIST / "source.json").read_text())
         self.assertTrue(all("_origin" not in app for app in source["apps"]))
 
+    def test_public_source_uses_canonical_domain_root(self):
+        source = json.loads((DIST / "source.json").read_text())
+        self.assertEqual(source["identifier"], "com.zynthec.source")
+        self.assertEqual(source["website"], "https://source.zynthec.com")
+        self.assertEqual(source["sourceURL"], "https://source.zynthec.com")
+        self.assertNotIn("source.json", source["sourceURL"])
+        self.assertEqual(source["iconURL"], "https://source.zynthec.com/assets/source-icon.png")
+        self.assertTrue(all(
+            app["iconURL"].startswith("https://source.zynthec.com/")
+            for app in source["apps"]
+        ))
+
     def test_youtube_music_no_longer_declares_cast_permissions(self):
         source = json.loads((DIST / "source.json").read_text())
         app = next(app for app in source["apps"] if app["bundleIdentifier"] == "com.google.ios.youtubemusic")
