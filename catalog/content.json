@@ -47,7 +47,7 @@
       "screenshots": []
     },
     "com.zynthec.zloader": {
-      "ipaFile": "zLoader-0.1.2-unsigned.ipa",
+      "ipaFile": "zLoader-0.1.3-unsigned.ipa",
       "name": "zLoader",
       "developerName": "zynthec",
       "subtitle": "Lokale IPA-Bibliothek und Signierung für iOS 27.",
@@ -55,8 +55,8 @@
       "category": "utilities",
       "tintColor": "#2366E8",
       "iconFile": "catalog/assets/zloader-icon.png",
-      "marketingVersion": "0.1.2",
-      "versionDescription": "Vorabversion: Standardzertifikate pro Konto und Team, Wiederverwendung lokaler und importierter Schlüssel, automatische Zertifikatserstellung bei Bedarf. Gespeicherte Apple-Sitzung ohne separaten lokalen Anmeldeschritt. Download-Fortschritt, Schutz vor doppelten Originalen und gruppierte Signiervarianten mit Zertifikatskennzeichnung. 31 Kern-Tests und vier UI-Abläufe bestanden. Apple-Zertifikatsanforderung und Pairing am echten Gerät noch zu verifizieren. Installationstransport, Tunnel und Refresh bleiben offen. Öffentliche IPA selbst signieren.",
+      "marketingVersion": "0.1.3",
+      "versionDescription": "Vorabversion: Zertifikat-Schlüsselbund mit CSR-Angaben, Zertifikattypen, öffentlichen CER- und verschlüsselten P12-Exporten, Widerruf und mehreren Provisioning-Profilen. Erweiterungen, Entitlements und Hintergrundmodi vor der Signierung konfigurieren. Lokales Nearby-Pairing, verschlüsselter Pairing-Transfer und Geräteregistrierung. Optionaler lokaler HTTPS-Installationsserver mit expliziter Zertifikats-Vertrauensstellung. 40 Kern-Tests bestanden. Live-Apple-Vorgänge, Pairing und Installation auf einem zweiten physischen Gerät noch nicht verifiziert. Direkter Installationstransport, Tunnel und Refresh bleiben offen. Öffentliche IPA selbst signieren.",
       "screenshots": [],
       "appPermissions": {
         "entitlements": [],
