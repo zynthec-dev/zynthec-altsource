@@ -47,7 +47,7 @@
       "screenshots": []
     },
     "com.zynthec.zloader": {
-      "ipaFile": "zLoader-0.1.5-unsigned.ipa",
+      "ipaFile": "zLoader-0.1.6-unsigned.ipa",
       "name": "zLoader",
       "developerName": "zynthec",
       "subtitle": "Lokale IPA-Bibliothek und Signierung für iOS 27.",
@@ -55,8 +55,8 @@
       "category": "utilities",
       "tintColor": "#7045B8",
       "iconFile": "catalog/assets/zloader-icon.png",
-      "marketingVersion": "0.1.5",
-      "versionDescription": "Vereinfachte Signierung, sichtbarer Download-Fortschritt und gruppierte IPA-Kopien mit automatischem Wechsel in die Bibliothek. Zertifikate werden automatisch geladen und geschützt zwischengespeichert. App-IDs, Capabilities, Profile und Geräteregistrierung direkt erreichbar. Neuer lokaler verschlüsselter Installationstunnel mit UDID- und Build-Prüfung; physische Geräte-, Apple-Konto-, Mobilfunk- und Selbstinstallations-Akzeptanz noch unbestätigt. 41 Core-Tests, sechs Simulator-Abläufe und iOS-Release-Build bestanden. Öffentliche IPA unsigniert; automatischer Refresh noch nicht implementiert.",
+      "marketingVersion": "0.1.6",
+      "versionDescription": "Apple-Fehler 9416 bei der automatischen App-ID-Erstellung behoben, auch für Extensions. Bundle-Identifier bleiben unverändert. Apple-Zertifikate bleiben geschützt im Keychain gespeichert; keine erneute Abfrage beim Öffnen eines aktuellen Bestands, manuelles Aktualisieren weiterhin möglich. Kräftigere violette Akzente und native Liquid-Glass-Aktionen. 44 Core-Tests bestanden. Öffentliche IPA unsigniert; Live-Apple-Signierung und physische Installation weiterhin gesondert zu prüfen.",
       "screenshots": [],
       "appPermissions": {
         "entitlements": [],
