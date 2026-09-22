@@ -157,14 +157,14 @@ def build() -> None:
     merged: dict[str, dict[str, Any]] = {}
     for app in manual + local:
         merged[app["bundleIdentifier"]] = app
-    apps = list(merged.values())
+    apps = sorted(merged.values(), key=lambda app: app["bundleIdentifier"] != "com.zynthec.zloader")
     feed_apps = [{key: value for key, value in app.items() if not key.startswith("_")} for app in apps]
     feed = {
         "name": settings["name"], "identifier": settings["identifier"],
         "subtitle": settings["subtitle"], "description": settings["description"],
         "sourceURL": settings["sourceURL"], "website": settings["website"],
         "iconURL": settings["iconURL"], "tintColor": settings["tintColor"],
-        "featuredApps": list(dict.fromkeys(app["bundleIdentifier"] for app in local))[:5],
+        "featuredApps": sorted(dict.fromkeys(app["bundleIdentifier"] for app in local), key=lambda identifier: identifier != "com.zynthec.zloader")[:5],
         "apps": feed_apps, "news": content.get("news", [])
     }
     write_json(DIST / "source.json", feed)

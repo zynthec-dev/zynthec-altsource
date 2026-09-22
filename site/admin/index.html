@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#071b1c">
+  <meta name="theme-color" content="#f5f4f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141217" media="(prefers-color-scheme: dark)">
   <title>zynthec App-Verwaltung</title>
   <link rel="icon" href="../assets/source-icon.png">
   <link rel="stylesheet" href="./base.css">
   <link rel="stylesheet" href="./admin.css">
 </head>
 <body>
-  <div class="aurora"></div>
+  <div class="aurora" aria-hidden="true"></div>
   <main class="admin-shell">
     <header class="admin-header">
       <a class="brand" href="./"><img src="../assets/source-icon.png" alt=""><span><strong>zynthec Apps</strong><small>App-Verwaltung</small></span></a>
-      <button class="secondary-button hidden" id="logout">Abmelden</button>
+      <div class="header-actions"><label class="appearance"><span>Darstellung</span><select id="appearance" aria-label="Darstellung"><option value="system">System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></label><button class="secondary-button hidden" id="logout">Abmelden</button></div>
     </header>
 
     <section class="login glass" id="loginPanel">
@@ -24,7 +25,7 @@
       <label>Admin-Token<input id="token" type="password" placeholder="github_pat_…" autocomplete="off"></label>
       <details><summary>Erweiterte Verbindung</summary><label>Repository<input id="repo" value="zynthec-dev/zynthec-altsource" autocomplete="off"></label><label>Branch<input id="branch" value="main" autocomplete="off"></label></details>
       <button class="primary-button" id="connect">App-Verwaltung öffnen</button>
-      <p class="form-status" id="loginStatus"></p>
+      <p class="form-status" id="loginStatus" role="status" aria-live="polite"></p>
     </section>
 
     <section class="dashboard hidden" id="dashboard">
@@ -33,19 +34,19 @@
     </section>
   </main>
 
-  <dialog id="editor">
+  <dialog id="editor" aria-labelledby="editorTitle">
     <form method="dialog" id="editorForm">
-      <button type="button" class="dialog-close">×</button>
+      <button type="button" class="dialog-close" aria-label="Schließen">×</button>
       <div class="editor-body">
         <p class="eyebrow" id="editorEyebrow">APP</p>
         <h2 id="editorTitle">App bearbeiten</h2>
         <div id="editorFields"></div>
-        <div class="editor-actions"><button type="button" class="danger-button hidden" id="deleteItem">App entfernen</button><span></span><button value="cancel" class="secondary-button">Abbrechen</button><button type="submit" value="default" class="primary-button">Speichern</button></div>
-        <p class="form-status" id="editorStatus"></p>
+        <div class="editor-actions"><button type="button" class="danger-button hidden" id="deleteItem">App entfernen</button><span></span><button type="button" id="cancelEditor" class="secondary-button">Abbrechen</button><button type="submit" value="default" class="primary-button">Speichern</button></div>
+        <p class="form-status" id="editorStatus" role="status" aria-live="polite"></p>
       </div>
     </form>
   </dialog>
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="./admin.js" type="module"></script>
 </body>
 </html>

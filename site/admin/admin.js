@@ -65,16 +65,20 @@ async function load() {
 function records() {
   const local = Object.entries(state.content.localApps).map(([key, app]) => ({ kind: "local", key, app }));
   const uploaded = state.content.uploadedApps.map((app, index) => ({ kind: "uploaded", key: index, app }));
-  return [...local, ...uploaded];
+  return [...local, ...uploaded].sort((a, b) => Number(isZLoader(b)) - Number(isZLoader(a)));
+}
+
+function isZLoader(record) {
+  return record.key === "com.zynthec.zloader" || record.app.bundleIdentifier === "com.zynthec.zloader";
 }
 
 function render() {
   const apps = records();
-  $("#appsList").innerHTML = apps.map(({ kind, key, app }) => `<article class="admin-item" data-kind="${kind}" data-key="${escapeHTML(key)}"><div class="admin-item-mark">${app.iconFile ? "✓" : "IPA"}</div><div><h3>${escapeHTML(app.name || app.ipaFile || key)}</h3><p>${escapeHTML(app.marketingVersion ? `Version ${app.marketingVersion} · ` : "")}${escapeHTML(app.ipaFile || key)}</p></div><span class="chevron">›</span></article>`).join("") || '<div class="empty-shot">Noch keine Apps. Über „App hochladen“ kannst du die erste IPA hinzufügen.</div>';
+  $("#appsList").innerHTML = apps.map(({ kind, key, app }) => `<button type="button" class="admin-item" data-kind="${kind}" data-key="${escapeHTML(key)}" data-pinned="${isZLoader({kind,key,app})}"><span class="admin-item-mark" aria-hidden="true">${isZLoader({kind,key,app}) ? "z" : "IPA"}</span><span class="admin-item-copy"><span class="item-title">${escapeHTML(app.name || app.ipaFile || key)}</span><span class="item-description">${escapeHTML(app.marketingVersion ? `Version ${app.marketingVersion} · ` : "")}${escapeHTML(app.ipaFile || key)}</span>${isZLoader({kind,key,app}) ? '<span class="pin-label">An erster Stelle · zLoader</span>' : ""}</span><span class="chevron" aria-hidden="true">›</span></button>`).join("") || '<div class="empty-shot">Noch keine Apps. Über „App hochladen“ kannst du die erste IPA hinzufügen.</div>';
 }
 
 function defaultApp() {
-  return { name: "", developerName: "zynthec", subtitle: "", localizedDescription: "", category: "utilities", tintColor: "#00C7B7", marketingVersion: "", versionDescription: "Neue Version", screenshots: [], ipaFile: "" };
+  return { name: "", developerName: "zynthec", subtitle: "", localizedDescription: "", category: "utilities", tintColor: "#7045B8", marketingVersion: "", versionDescription: "Neue Version", screenshots: [], ipaFile: "" };
 }
 
 function field(app, key, label, type) {
@@ -239,10 +243,28 @@ document.addEventListener("click", event => {
   if (item) openEditor(item.dataset.kind, item.dataset.key);
   if (event.target.closest(".dialog-close")) $("#editor").close();
 });
-$("#editorForm").addEventListener("submit", event => { event.preventDefault(); save(); });
+$("#editorForm").addEventListener("submit", event => { event.preventDefault(); if (event.submitter?.value === "cancel") { $("#editor").close(); return; } save(); });
 $("#deleteItem").onclick = remove;
+$("#cancelEditor").onclick = () => $("#editor").close();
 
 try {
   const saved = JSON.parse(sessionStorage.getItem("zynthecAdmin"));
   if (saved) { Object.assign(state, saved); $("#repo").value = state.repo; $("#branch").value = state.branch; $("#token").value = state.token; $("#connect").click(); }
 } catch {}
+
+
+// Appearance is a local UI preference and contains no authentication data.
+const appearance = $("#appearance");
+function applyAppearance(value) {
+  if (value === "light" || value === "dark") document.documentElement.dataset.theme = value;
+  else delete document.documentElement.dataset.theme;
+}
+try {
+  const savedAppearance = localStorage.getItem("zynthecAppearance");
+  if (["light", "dark", "system"].includes(savedAppearance)) appearance.value = savedAppearance;
+} catch { /* Storage may be unavailable in private/restricted browsing. */ }
+applyAppearance(appearance.value);
+appearance.addEventListener("change", () => {
+  applyAppearance(appearance.value);
+  try { localStorage.setItem("zynthecAppearance", appearance.value); } catch { /* In-memory choice still works. */ }
+});

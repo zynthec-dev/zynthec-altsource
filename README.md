@@ -58,3 +58,12 @@ Der aktuelle Live-Stand wird über den Cloudflare Worker `zynthec-altsource` unt
 - Build command bei Cloudflare Pages: `python3 scripts/build.py`
 - Output directory: `dist`
 - Custom domain: `altsource.zynthec.com`
+
+
+## Violette Gestaltung und feste Reihenfolge
+
+Die Source verwendet `#7045B8` und das gemeinsame neutrale Glas-Icon. zLoader (`com.zynthec.zloader`) steht in `apps`, `featuredApps` und im Admin-Panel immer zuerst, sofern der Eintrag vorhanden ist. Andere Apps behalten ihre relative Reihenfolge. Clients mit eigener Sortierung können die Feed-Reihenfolge überschreiben.
+
+Das Admin-Panel unterstützt System/Hell/Dunkel, speichert ausschließlich die Darstellungspräferenz in localStorage und bleibt per Tastatur bedienbar. Dezente CSS-Transparenz ist eine Webannäherung; Apples native Liquid-Glass-Materialien werden nur im iOS-Icon verwendet. Reduzierte Bewegung, erhöhter Kontrast und reduzierte Transparenz werden berücksichtigt, soweit der Browser die entsprechenden Medienabfragen unterstützt.
+
+Der isolierte Browsertest `tests/admin-ui.mjs` benötigt Playwright und Chrome. Mit `ADMIN_TEST_URL` lässt sich eine lokale Preview auswählen; `ADMIN_TEST_ROOT` kann alternativ die generierten `dist`-Dateien direkt bereitstellen. `PLAYWRIGHT_MODULE`, `CHROME_PATH` und `ADMIN_SCREENSHOTS` sind optional konfigurierbar. Der Test fängt sämtliche GitHub-Anfragen ab und verwendet ausschließlich Testdaten. Er prüft Reihenfolge, Tastaturbedienung, Abbrechen ohne Schreibzugriff, Theme-Persistenz, mobile Breite und Reduce Motion.

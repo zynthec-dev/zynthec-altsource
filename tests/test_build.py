@@ -53,6 +53,14 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(len(featured), len(set(featured)))
         self.assertTrue(set(featured).issubset({app["bundleIdentifier"] for app in source["apps"]}))
 
+    def test_zloader_stays_first_when_available(self):
+        source = json.loads((DIST / "source.json").read_text())
+        identifiers = [app["bundleIdentifier"] for app in source["apps"]]
+        if "com.zynthec.zloader" in identifiers:
+            self.assertEqual(identifiers[0], "com.zynthec.zloader")
+        if "com.zynthec.zloader" in source["featuredApps"]:
+            self.assertEqual(source["featuredApps"][0], "com.zynthec.zloader")
+
     def test_feed_has_no_private_origin_metadata(self):
         source = json.loads((DIST / "source.json").read_text())
         self.assertTrue(all("_origin" not in app for app in source["apps"]))
