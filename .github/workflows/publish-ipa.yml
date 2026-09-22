@@ -36,6 +36,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ASSET_NAME: ${{ inputs.asset_name }}
         run: |
-          gh release view apps >/dev/null 2>&1 || gh release create apps --title "App downloads" --notes "Binary releases used by zynthec Apps."
+          gh release view apps >/dev/null 2>&1 || gh release create apps --title "App downloads" --notes "Binary releases used by zynthec Source."
           gh release upload apps "$ASSET_NAME" --clobber
           gh workflow run deploy.yml

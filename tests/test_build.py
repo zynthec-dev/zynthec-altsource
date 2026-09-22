@@ -67,6 +67,7 @@ class BuildTests(unittest.TestCase):
 
     def test_public_source_uses_canonical_domain_root(self):
         source = json.loads((DIST / "source.json").read_text())
+        self.assertEqual(source["name"], "zynthec Source")
         self.assertEqual(source["identifier"], "com.zynthec.source")
         self.assertEqual(source["website"], "https://source.zynthec.com")
         self.assertEqual(source["sourceURL"], "https://source.zynthec.com")

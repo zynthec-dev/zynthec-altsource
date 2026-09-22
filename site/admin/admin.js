@@ -118,7 +118,7 @@ async function ensureRelease() {
   try { return await api("/releases/tags/apps"); }
   catch (error) {
     if (error.status !== 404) throw error;
-    return api("/releases", { method: "POST", body: JSON.stringify({ tag_name: "apps", name: "App downloads", body: "IPA releases used by zynthec Apps." }) });
+    return api("/releases", { method: "POST", body: JSON.stringify({ tag_name: "apps", name: "App downloads", body: "IPA releases used by zynthec Source." }) });
   }
 }
 
