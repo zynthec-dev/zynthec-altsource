@@ -3,7 +3,9 @@ const escapeHTML = value => String(value ?? "").replace(/[&<>'"]/g, character =>
   "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
 })[character]);
 
-const state = { repo: "", branch: "main", token: "", content: null, file: null, edit: null };
+const REPOSITORY = "zynthec-dev/zynthec-altsource";
+const BRANCH = "main";
+const state = { token: "", content: null, file: null, edit: null };
 const editableFields = [
   ["name", "App-Name", "text"],
   ["developerName", "Entwickler", "text"],
@@ -21,7 +23,7 @@ class ApiError extends Error {
 }
 
 async function api(path, options = {}) {
-  const response = await fetch(`https://api.github.com/repos/${state.repo}${path}`, {
+  const response = await fetch(`https://api.github.com/repos/${REPOSITORY}${path}`, {
     ...options,
     headers: {
       Accept: "application/vnd.github+json",
@@ -55,7 +57,7 @@ function encodeJSON(data) {
 }
 
 async function load() {
-  state.file = await api(`/contents/catalog/content.json?ref=${encodeURIComponent(state.branch)}`);
+  state.file = await api(`/contents/catalog/content.json?ref=${encodeURIComponent(BRANCH)}`);
   state.content = decode(state.file.content);
   state.content.localApps ||= {};
   state.content.uploadedApps ||= [];
@@ -150,20 +152,20 @@ function safeAssetName(app, file) {
 
 async function putFile(path, bytes, message) {
   let sha;
-  try { sha = (await api(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`)).sha; } catch (error) { if (error.status !== 404) throw error; }
-  await api(`/contents/${path}`, { method: "PUT", body: JSON.stringify({ message, content: encodeBytes(bytes), branch: state.branch, ...(sha ? { sha } : {}) }) });
+  try { sha = (await api(`/contents/${path}?ref=${encodeURIComponent(BRANCH)}`)).sha; } catch (error) { if (error.status !== 404) throw error; }
+  await api(`/contents/${path}`, { method: "PUT", body: JSON.stringify({ message, content: encodeBytes(bytes), branch: BRANCH, ...(sha ? { sha } : {}) }) });
 }
 
 async function deleteFile(path) {
   if (!path) return;
   try {
-    const file = await api(`/contents/${path}?ref=${encodeURIComponent(state.branch)}`);
-    await api(`/contents/${path}`, { method: "DELETE", body: JSON.stringify({ message: `admin: remove icon ${path}`, sha: file.sha, branch: state.branch }) });
+    const file = await api(`/contents/${path}?ref=${encodeURIComponent(BRANCH)}`);
+    await api(`/contents/${path}`, { method: "DELETE", body: JSON.stringify({ message: `admin: remove icon ${path}`, sha: file.sha, branch: BRANCH }) });
   } catch (error) { if (error.status !== 404) throw error; }
 }
 
 async function commitContent(message) {
-  const result = await api("/contents/catalog/content.json", { method: "PUT", body: JSON.stringify({ message, content: encodeJSON(state.content), sha: state.file.sha, branch: state.branch }) });
+  const result = await api("/contents/catalog/content.json", { method: "PUT", body: JSON.stringify({ message, content: encodeJSON(state.content), sha: state.file.sha, branch: BRANCH }) });
   state.file.sha = result.content.sha;
 }
 
@@ -221,14 +223,12 @@ function toast(message) {
 }
 
 $("#connect").onclick = async () => {
-  state.repo = $("#repo").value.trim();
-  state.branch = $("#branch").value.trim();
   state.token = $("#token").value.trim();
   $("#loginStatus").textContent = "Admin-Zugang wird geprüft …";
   try {
     const repository = await api("");
     if (!repository.permissions?.push) throw new Error("Der Admin-Token hat keine Schreibberechtigung.");
-    sessionStorage.setItem("zynthecAdmin", JSON.stringify({ repo: state.repo, branch: state.branch, token: state.token }));
+    sessionStorage.setItem("zynthecAdmin", JSON.stringify({ token: state.token }));
     await load();
     $("#loginPanel").classList.add("hidden");
     $("#dashboard").classList.remove("hidden");
@@ -249,7 +249,7 @@ $("#cancelEditor").onclick = () => $("#editor").close();
 
 try {
   const saved = JSON.parse(sessionStorage.getItem("zynthecAdmin"));
-  if (saved) { Object.assign(state, saved); $("#repo").value = state.repo; $("#branch").value = state.branch; $("#token").value = state.token; $("#connect").click(); }
+  if (saved?.token) { state.token = saved.token; $("#token").value = state.token; $("#connect").click(); }
 } catch {}
 
 
