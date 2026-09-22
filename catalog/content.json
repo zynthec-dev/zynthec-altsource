@@ -47,7 +47,7 @@
       "screenshots": []
     },
     "com.zynthec.zloader": {
-      "ipaFile": "zLoader-0.1.6-unsigned.ipa",
+      "ipaFile": "zLoader-0.1.7-unsigned.ipa",
       "name": "zLoader",
       "developerName": "zynthec",
       "subtitle": "Lokale IPA-Bibliothek und Signierung für iOS 27.",
@@ -55,14 +55,35 @@
       "category": "utilities",
       "tintColor": "#7045B8",
       "iconFile": "catalog/assets/zloader-icon.png",
-      "marketingVersion": "0.1.6",
-      "versionDescription": "Apple-Fehler 9416 bei der automatischen App-ID-Erstellung behoben, auch für Extensions. Bundle-Identifier bleiben unverändert. Apple-Zertifikate bleiben geschützt im Keychain gespeichert; keine erneute Abfrage beim Öffnen eines aktuellen Bestands, manuelles Aktualisieren weiterhin möglich. Kräftigere violette Akzente und native Liquid-Glass-Aktionen. 44 Core-Tests bestanden. Öffentliche IPA unsigniert; Live-Apple-Signierung und physische Installation weiterhin gesondert zu prüfen.",
+      "marketingVersion": "0.1.7",
+      "versionDescription": "Standardexport für Pairing-Dateien: originale Remote- oder Lockdown-Records als XML-Plist (.mobiledevicepairing), ohne ZLoader-Verpackung und ohne Exportpasswort. Geräteauthentifizierung schützt die Freigabe. Optionales verschlüsseltes Backup bleibt erhalten. Neue Format-Erhaltungstests und zPosition-IPA-Importprüfung. Selbst signieren; physische App-Kompatibilität hängt vom unterstützten Pairing-Protokoll ab.",
       "screenshots": [],
       "appPermissions": {
         "entitlements": [],
         "privacy": {
           "NSLocalNetworkUsageDescription": "Pair directly with your device when you start pairing, or share selected IPA packages while the local server is enabled.",
           "NSFaceIDUsageDescription": "Protect your developer credentials and signing identity management."
+        }
+      }
+    },
+    "com.zynthec.zposition": {
+      "ipaFile": "zPosition-Control-1.0.0-unsigned.ipa",
+      "name": "zPosition Control",
+      "developerName": "zynthec",
+      "subtitle": "Orte und Routen direkt auf deinem iPhone.",
+      "localizedDescription": "Native Karten, Ortssuche, gespeicherte Orte und Routen, GPX-Import/-Export und Routenplayer. Signing über ZLoader; RPPairing-Datei aus ZLoader importieren. Integrierter lokaler Tunnel und nativer DVT-Verbindungspfad. MVP: echte GPS-Simulation auf einem physischen iPhone noch nicht verifiziert. Routen pausieren im Hintergrund. Home-Screen-Name: zPosition.",
+      "category": "utilities",
+      "tintColor": "#00A9F4",
+      "marketingVersion": "1.0.0",
+      "versionDescription": "Erster MVP mit Standard-RPPairing-Import (.mobiledevicepairing), optionalem ZLoader-.zpair-Import, eigener Tunnel-Extension und erhaltenen Signing-Berechtigungen. Selbst über ZLoader signieren; Network-Extension-fähige Profile erforderlich. Physischer GPS-Test steht aus.",
+      "screenshots": [],
+      "appPermissions": {
+        "entitlements": [
+          "com.apple.developer.networking.networkextension"
+        ],
+        "privacy": {
+          "NSLocationWhenInUseUsageDescription": "Center the map on your actual location. This permission does not simulate your device location.",
+          "NSLocalNetworkUsageDescription": "Connect locally to this iPhone’s developer location service. No location data is sent to a custom server."
         }
       }
     }
