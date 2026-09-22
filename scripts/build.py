@@ -164,7 +164,7 @@ def build() -> None:
         "subtitle": settings["subtitle"], "description": settings["description"],
         "sourceURL": settings["sourceURL"], "website": settings["website"],
         "iconURL": settings["iconURL"], "tintColor": settings["tintColor"],
-        "featuredApps": sorted(dict.fromkeys(app["bundleIdentifier"] for app in local), key=lambda identifier: identifier != "com.zynthec.zloader")[:5],
+        "featuredApps": ["com.zynthec.zloader"] if "com.zynthec.zloader" in merged else [],
         "apps": feed_apps, "news": content.get("news", [])
     }
     write_json(DIST / "source.json", feed)

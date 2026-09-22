@@ -86,7 +86,7 @@ function defaultApp() {
 function field(app, key, label, type) {
   const value = key === "screenshots" ? (app.screenshots || []).map(item => typeof item === "string" ? item : item.imageURL).join("\n") : app[key] || "";
   if (type === "textarea") return `<label class="field">${label}<textarea name="${key}">${escapeHTML(value)}</textarea></label>`;
-  if (type === "select") return `<label class="field">${label}<select name="${key}">${["developer", "entertainment", "games", "lifestyle", "music", "other", "photo-video", "social", "utilities"].map(option => `<option ${option === value ? "selected" : ""}>${option}</option>`).join("")}</select></label>`;
+  if (type === "select") return `<label class="field">${label}<select name="${key}">${["developer", "entertainment", "games", "lifestyle", "other", "photo-video", "social", "utilities"].map(option => `<option ${option === value ? "selected" : ""}>${option}</option>`).join("")}</select></label>`;
   return `<label class="field">${label}<input name="${key}" type="${type}" value="${escapeHTML(value)}" ${key === "name" ? "required" : ""}></label>`;
 }
 

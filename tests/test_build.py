@@ -58,8 +58,14 @@ class BuildTests(unittest.TestCase):
         identifiers = [app["bundleIdentifier"] for app in source["apps"]]
         if "com.zynthec.zloader" in identifiers:
             self.assertEqual(identifiers[0], "com.zynthec.zloader")
-        if "com.zynthec.zloader" in source["featuredApps"]:
-            self.assertEqual(source["featuredApps"][0], "com.zynthec.zloader")
+            self.assertEqual(source["featuredApps"], ["com.zynthec.zloader"])
+        else:
+            self.assertEqual(source["featuredApps"], [])
+
+    def test_apps_use_supported_categories(self):
+        source = json.loads((DIST / "source.json").read_text())
+        supported = {"developer", "entertainment", "games", "lifestyle", "other", "photo-video", "social", "utilities"}
+        self.assertTrue(all(app["category"] in supported for app in source["apps"]))
 
     def test_feed_has_no_private_origin_metadata(self):
         source = json.loads((DIST / "source.json").read_text())

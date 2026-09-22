@@ -18,7 +18,7 @@
       "developerName": "Google / Ultimate",
       "subtitle": "YouTube Music mit den Ultimate-Erweiterungen.",
       "localizedDescription": "Die bereitgestellte Originalversion von YouTube Music Ultimate mit angepasst sichtbarem Namen und deaktiviertem Cast-Modul.",
-      "category": "music",
+      "category": "entertainment",
       "tintColor": "#FF0033",
       "iconFile": "catalog/assets/youtube-music-ultimate-icon.png",
       "marketingVersion": "2.4.1_9.37.2-no-cast",
