@@ -47,16 +47,16 @@
       "screenshots": []
     },
     "com.zynthec.zloader": {
-      "ipaFile": "zLoader-0.1.4-unsigned.ipa",
+      "ipaFile": "zLoader-0.1.5-unsigned.ipa",
       "name": "zLoader",
       "developerName": "zynthec",
       "subtitle": "Lokale IPA-Bibliothek und Signierung für iOS 27.",
-      "localizedDescription": "zLoader verwaltet, untersucht, bearbeitet und signiert IPA-Dateien lokal. Konto- und Teamauswahl für Apple-Sitzungen oder API-Schlüssel; On-device RPPairing mit PIN-Bestätigung. Vorabversion: Live-Konto-Signierung und Pairing am echten Gerät noch zu prüfen. Direkte Installation, Tunnel und App-Refresh sind noch nicht verfügbar. Öffentliche IPA selbst signieren.",
+      "localizedDescription": "Lokale IPA-Bibliothek und vereinfachte Signierung über gespeicherte Apple Accounts oder Zertifikate. Zertifikate, App-IDs, Profile und Geräte direkt verwalten. Neuer lokaler verschlüsselter Installationstunnel mit Prüfung von Pairing, Zielgerät und installiertem Build. Vorabversion: Live-Apple-Vorgänge sowie physisches Pairing, Tunnel und Installation noch unbestätigt. Automatischer Refresh noch nicht implementiert. Öffentliche IPA selbst signieren.",
       "category": "utilities",
       "tintColor": "#7045B8",
       "iconFile": "catalog/assets/zloader-icon.png",
-      "marketingVersion": "0.1.4",
-      "versionDescription": "Neues natives Liquid-Glass-App-Icon mit dezenten violetten Akzenten und Systemvarianten für hell, dunkel, getönt und klar. iOS-27-Gerätebuild geprüft. Funktionsumfang und Grenzen entsprechen 0.1.3: echte Apple-Vorgänge, physisches Pairing und Installation auf einem zweiten Gerät bleiben unbestätigt. Diese öffentliche IPA ist unsigniert und muss vor der Installation signiert werden.",
+      "marketingVersion": "0.1.5",
+      "versionDescription": "Vereinfachte Signierung, sichtbarer Download-Fortschritt und gruppierte IPA-Kopien mit automatischem Wechsel in die Bibliothek. Zertifikate werden automatisch geladen und geschützt zwischengespeichert. App-IDs, Capabilities, Profile und Geräteregistrierung direkt erreichbar. Neuer lokaler verschlüsselter Installationstunnel mit UDID- und Build-Prüfung; physische Geräte-, Apple-Konto-, Mobilfunk- und Selbstinstallations-Akzeptanz noch unbestätigt. 41 Core-Tests, sechs Simulator-Abläufe und iOS-Release-Build bestanden. Öffentliche IPA unsigniert; automatischer Refresh noch nicht implementiert.",
       "screenshots": [],
       "appPermissions": {
         "entitlements": [],
