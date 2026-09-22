@@ -93,7 +93,7 @@
   "news": [
     {
       "identifier": "welcome-to-zynthec-apps",
-      "title": "Willkommen bei zynthec Source",
+      "title": "Willkommen bei zynthec-source",
       "caption": "Die offizielle Source für Apps von zynthec.",
       "date": "2026-09-19",
       "tintColor": "#00C7B7",

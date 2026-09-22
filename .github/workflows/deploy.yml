@@ -1,4 +1,4 @@
-name: Build and deploy zynthec Source
+name: Build and deploy zynthec-source
 
 on:
   push:

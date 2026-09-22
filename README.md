@@ -1,4 +1,4 @@
-# zynthec Source
+# zynthec-source
 
 Eine schlanke AltStore-/SideStore-Source für eigene IPA-Dateien mit browserbasierter Admin-Seite.
 
@@ -28,7 +28,7 @@ Der fertige statische Build liegt in `dist/`.
 IPAs werden nicht in Git eingecheckt. Sie gehören in das GitHub Release mit dem Tag `apps`:
 
 ```bash
-gh release create apps --title "App downloads" --notes "Binary releases used by zynthec Source."
+gh release create apps --title "App downloads" --notes "Binary releases used by zynthec-source."
 gh release upload apps miPet-0.3-beta.ipa
 ```
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the zynthec Source feed and admin page."""
+"""Build the zynthec-source feed and admin page."""
 from __future__ import annotations
 
 import argparse
