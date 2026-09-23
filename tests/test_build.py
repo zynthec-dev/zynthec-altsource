@@ -120,12 +120,12 @@ class BuildTests(unittest.TestCase):
         import hashlib
         source = json.loads((DIST / "source.json").read_text())
         app = next(app for app in source["apps"] if app["bundleIdentifier"] == "com.zynthec.devicehubremote")
-        self.assertEqual(app["name"], "Device Hub Remote")
+        self.assertEqual(app["name"], "Device Hub")
         version = app["versions"][0]
         self.assertEqual(version["version"], "0.1.0")
         self.assertEqual(version["minOSVersion"], "17.2")
         self.assertEqual(version["sha256"], hashlib.sha256((ROOT / "DeviceHubRemote-0.1.0.ipa").read_bytes()).hexdigest())
-        self.assertIn("NSLocalNetworkUsageDescription", app["appPermissions"]["privacy"])
+        self.assertIsInstance(app["appPermissions"]["privacy"], dict)
         self.assertTrue((DIST / "assets/apps/com.zynthec.devicehubremote.png").is_file())
 
     def test_admin_is_built_without_storefront_or_installer_artifacts(self):

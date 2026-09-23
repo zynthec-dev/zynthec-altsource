@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdir, readFile } from 'node:fs/promises';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const base = process.env.ADMIN_TEST_URL || 'http://127.0.0.1:8767/admin/';
-const screenshots = process.env.ADMIN_SCREENSHOTS || '/tmp/zloader-admin-qa';
+const screenshots = process.env.ADMIN_SCREENSHOTS || '/tmp/zynthec-source-admin-qa';
 await mkdir(screenshots, { recursive: true });
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
 try {
@@ -23,7 +23,7 @@ try {
  page.on('pageerror', error => errors.push(error.message));
  const content = { localApps: {
   'example.other': { name: 'Another App', ipaFile: 'Another.ipa', marketingVersion: '1.0' },
-  'com.zynthec.zloader': { name: 'zLoader', ipaFile: 'zLoader-0.1.4-unsigned.ipa', marketingVersion: '0.1.4' }
+  'de.renewitt.mipet': { name: 'miPet', ipaFile: 'miPet-0.3-beta.ipa', marketingVersion: '0.3-beta' }
  }, uploadedApps: [] };
  await page.route('https://api.github.com/**', async route => {
   if (route.request().method() !== 'GET') mutations.push(route.request().method());
@@ -41,7 +41,7 @@ try {
  await page.locator('#token').fill('TEST_ONLY_NO_CREDENTIAL');
  await page.locator('#connect').click();
  await page.locator('#dashboard:not(.hidden)').waitFor();
- assert.match(await page.locator('.admin-item').first().innerText(), /zLoader/);
+ assert.match(await page.locator('.admin-item').first().innerText(), /Another App/);
  await page.screenshot({ path: `${screenshots}/dashboard-dark.png`, fullPage: true, animations: "disabled" });
  await page.locator('.admin-item').first().press('Enter');
  await page.locator('input[name="name"]').fill('');
@@ -49,7 +49,7 @@ try {
  assert.equal(await page.locator('#editor').evaluate(e => e.open), false);
  assert.equal(mutations.length, 0, 'Cancel must not submit changes');
  await page.locator('.admin-item').first().click();
- assert.equal(await page.locator('input[name="name"]').inputValue(), 'zLoader');
+ assert.equal(await page.locator('input[name="name"]').inputValue(), 'Another App');
  await page.getByRole('button', { name: 'Schließen', exact: true }).click();
  await page.locator('#appearance').selectOption('light');
  await page.screenshot({ path: `${screenshots}/dashboard-light.png`, fullPage: true, animations: "disabled" });
@@ -62,5 +62,5 @@ try {
  await page.emulateMedia({ reducedMotion: 'reduce' });
  assert.equal(await page.locator('.primary-button').first().evaluate(e => getComputedStyle(e).transitionDuration), '0s');
  assert.deepEqual(errors, []);
- console.log('PASS: pinned ordering, keyboard editor, cancel without mutation, theme persistence, mobile overflow, reduced motion and browser errors');
+ console.log('PASS: app ordering, keyboard editor, cancel without mutation, theme persistence, mobile overflow, reduced motion and browser errors');
 } finally { await browser.close(); }

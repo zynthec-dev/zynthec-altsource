@@ -32,7 +32,7 @@ gh release create apps --title "App downloads" --notes "Binary releases used by 
 gh release upload apps miPet-0.3-beta.ipa
 ```
 
-Der Workflow **Publish IPA** kann eine IPA alternativ von einer direkten HTTPS-Adresse übernehmen, in das Release laden und danach den Store neu deployen.
+Der Workflow **Publish IPA** kann eine IPA alternativ von einer direkten HTTPS-Adresse übernehmen, in das Release laden und danach die Source neu deployen.
 
 ## Admin-Zugang
 
@@ -60,7 +60,7 @@ Der aktuelle Live-Stand wird über einen Cloudflare Worker unter `https://source
 - Custom domain: `source.zynthec.com`
 
 
-## Violette Gestaltung und feste Reihenfolge
+## Violette Gestaltung
 
 
 Das Admin-Panel unterstützt System/Hell/Dunkel, speichert ausschließlich die Darstellungspräferenz in localStorage und bleibt per Tastatur bedienbar. Dezente CSS-Transparenz ist eine Webannäherung; Apples native Liquid-Glass-Materialien werden nur im iOS-Icon verwendet. Reduzierte Bewegung, erhöhter Kontrast und reduzierte Transparenz werden berücksichtigt, soweit der Browser die entsprechenden Medienabfragen unterstützt.

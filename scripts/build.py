@@ -152,7 +152,7 @@ def build() -> None:
     shutil.copytree(ROOT / "site", DIST)
     (DIST / "assets").mkdir(parents=True, exist_ok=True)
     shutil.copy2(ROOT / "icon.png", DIST / "assets" / "source-icon.png")
-    # Explicit catalog selections win over filename ordering (0.1.10 < 0.1.9 as text).
+    # Explicit catalog selections win over filename ordering.
     selected = content.get("localApps", {})
     excluded = set(content.get("excludedBundleIdentifiers", []))
     paths = []
@@ -171,7 +171,7 @@ def build() -> None:
         if bundle_id in available_bundle_ids and preferred and not (ROOT / preferred).is_file():
             raise ValueError(f"{bundle_id}: configured IPA not found: {preferred}")
     local = [ipa_app(path, settings, content) for path in paths]
-    manual = [app for app in (normalize_app(app, {"name": "zynthec", "url": settings["sourceURL"]}) for app in content.get("manualApps", [])) if app]
+    manual = [app for app in (normalize_app(app, {"name": "zynthec", "url": settings["sourceURL"]}) for app in content.get("manualApps", [])) if app and app["bundleIdentifier"] not in excluded]
     merged: dict[str, dict[str, Any]] = {}
     for app in manual + local:
         if app["bundleIdentifier"] not in excluded:
