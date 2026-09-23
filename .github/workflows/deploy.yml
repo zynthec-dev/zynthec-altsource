@@ -27,7 +27,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if gh release view apps >/dev/null 2>&1; then
-            gh release download apps --pattern '*.ipa' --dir .
+            release_id=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/apps" --jq .id)
+            gh api --paginate "repos/$GITHUB_REPOSITORY/releases/$release_id/assets?per_page=100" \
+              --jq '.[] | select(.name | endswith(".ipa")) | .browser_download_url' > /tmp/ipa-assets.txt
+            while IFS= read -r asset_url; do
+              curl --fail --location --retry 3 --remote-name "$asset_url"
+            done < /tmp/ipa-assets.txt
           else
             echo "::warning::Release 'apps' does not exist yet; deploying the admin page with an empty source."
           fi
