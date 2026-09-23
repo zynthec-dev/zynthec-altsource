@@ -53,6 +53,16 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(len(featured), len(set(featured)))
         self.assertTrue(set(featured).issubset({app["bundleIdentifier"] for app in source["apps"]}))
 
+    def test_catalog_selected_ipa_is_published(self):
+        from urllib.parse import unquote, urlparse
+        source = json.loads((DIST / "source.json").read_text())
+        content = json.loads((ROOT / "catalog/content.json").read_text())
+        for app in source["apps"]:
+            preferred = content.get("localApps", {}).get(app["bundleIdentifier"], {}).get("ipaFile")
+            if preferred:
+                published = Path(unquote(urlparse(app["versions"][0]["downloadURL"]).path)).name
+                self.assertEqual(published, preferred)
+
     def test_zloader_stays_first_when_available(self):
         source = json.loads((DIST / "source.json").read_text())
         identifiers = [app["bundleIdentifier"] for app in source["apps"]]

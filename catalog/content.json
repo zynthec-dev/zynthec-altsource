@@ -47,7 +47,7 @@
       "screenshots": []
     },
     "com.zynthec.zloader": {
-      "ipaFile": "zLoader-0.1.9-unsigned.ipa",
+      "ipaFile": "zLoader-0.1.10-unsigned.ipa",
       "name": "zLoader",
       "developerName": "zynthec",
       "subtitle": "Lokale IPA-Bibliothek und Signierung für iOS 27.",
@@ -55,8 +55,8 @@
       "category": "utilities",
       "tintColor": "#7045B8",
       "iconFile": "catalog/assets/zloader-icon.png",
-      "marketingVersion": "0.1.9",
-      "versionDescription": "Aktueller Entwicklungsstand: überarbeitete Zertifikatauswahl und automatische Provisionierung, vereinfachte Pairing- und Übertragungsoberfläche sowie aktuelles App-Icon. Bekannte Fehler bei gemeinsamem Wildcard-Profil für App und Extension, zusätzlicher App-Sperre und einzelnen Capabilities bleiben offen. Pairing, Tunnel, Installation und Apple-Anmeldung auf physischem Gerät noch nicht verifiziert. Öffentliche IPA unsigniert.",
+      "marketingVersion": "0.1.10",
+      "versionDescription": "Überarbeitete Source-Ansicht und Navigation, Updates-Tab sowie verbesserte Darstellung von Quellen und App-Details. Enthält die aktuellen Änderungen aus dem App-Repository. Entwicklungsbuild: bekannte Signier- und Sicherheitsfehler aus der App-Analyse bleiben offen; physisches Pairing, Tunnel und Installation weiterhin nicht verifiziert. Öffentliche IPA unsigniert.",
       "screenshots": [],
       "appPermissions": {
         "entitlements": [],
