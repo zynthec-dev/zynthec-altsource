@@ -154,10 +154,13 @@ def build() -> None:
     shutil.copy2(ROOT / "icon.png", DIST / "assets" / "source-icon.png")
     # Explicit catalog selections win over filename ordering (0.1.10 < 0.1.9 as text).
     selected = content.get("localApps", {})
+    excluded = set(content.get("excludedBundleIdentifiers", []))
     paths = []
     available_bundle_ids = set()
     for path in sorted(ROOT.glob("*.ipa")):
         info, _ = plist_from_ipa(path)
+        if info["CFBundleIdentifier"] in excluded:
+            continue
         available_bundle_ids.add(info["CFBundleIdentifier"])
         preferred = selected.get(info["CFBundleIdentifier"], {}).get("ipaFile")
         if preferred and path.name != preferred:
@@ -171,15 +174,16 @@ def build() -> None:
     manual = [app for app in (normalize_app(app, {"name": "zynthec", "url": settings["sourceURL"]}) for app in content.get("manualApps", [])) if app]
     merged: dict[str, dict[str, Any]] = {}
     for app in manual + local:
-        merged[app["bundleIdentifier"]] = app
-    apps = sorted(merged.values(), key=lambda app: app["bundleIdentifier"] != "com.zynthec.zloader")
+        if app["bundleIdentifier"] not in excluded:
+            merged[app["bundleIdentifier"]] = app
+    apps = sorted(merged.values(), key=lambda app: app["name"].casefold())
     feed_apps = [{key: value for key, value in app.items() if not key.startswith("_")} for app in apps]
     feed = {
         "name": settings["name"], "identifier": settings["identifier"],
         "subtitle": settings["subtitle"], "description": settings["description"],
         "sourceURL": settings["sourceURL"], "website": settings["website"],
         "iconURL": settings["iconURL"], "tintColor": settings["tintColor"],
-        "featuredApps": ["com.zynthec.zloader"] if "com.zynthec.zloader" in merged else [],
+        "featuredApps": [],
         "apps": feed_apps, "news": content.get("news", [])
     }
     write_json(DIST / "source.json", feed)

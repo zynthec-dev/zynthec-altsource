@@ -46,36 +46,16 @@
       },
       "screenshots": []
     },
-    "com.zynthec.zloader": {
-      "ipaFile": "zLoader-0.1.10-unsigned.ipa",
-      "name": "zLoader",
-      "developerName": "zynthec",
-      "subtitle": "Lokale IPA-Bibliothek und Signierung für iOS 27.",
-      "localizedDescription": "Lokale IPA-Bibliothek und vereinfachte Signierung über gespeicherte Apple Accounts oder Zertifikate. Zertifikate, App-IDs, Profile und Geräte direkt verwalten. Neuer lokaler verschlüsselter Installationstunnel mit Prüfung von Pairing, Zielgerät und installiertem Build. Vorabversion: Live-Apple-Vorgänge sowie physisches Pairing, Tunnel und Installation noch unbestätigt. Automatischer Refresh noch nicht implementiert. Öffentliche IPA selbst signieren.",
-      "category": "utilities",
-      "tintColor": "#7045B8",
-      "iconFile": "catalog/assets/zloader-icon.png",
-      "marketingVersion": "0.1.10",
-      "versionDescription": "Überarbeitete Source-Ansicht und Navigation, Updates-Tab sowie verbesserte Darstellung von Quellen und App-Details. Enthält die aktuellen Änderungen aus dem App-Repository. Entwicklungsbuild: bekannte Signier- und Sicherheitsfehler aus der App-Analyse bleiben offen; physisches Pairing, Tunnel und Installation weiterhin nicht verifiziert. Öffentliche IPA unsigniert.",
-      "screenshots": [],
-      "appPermissions": {
-        "entitlements": [],
-        "privacy": {
-          "NSLocalNetworkUsageDescription": "Pair directly with your device when you start pairing, or share selected IPA packages while the local server is enabled.",
-          "NSFaceIDUsageDescription": "Protect your developer credentials and signing identity management."
-        }
-      }
-    },
     "com.zynthec.zposition": {
-      "ipaFile": "zPosition-Control-1.0.0-unsigned.ipa",
+      "ipaFile": "zPosition-Control-1.0.2-unsigned.ipa",
       "name": "zPosition Control",
       "developerName": "zynthec",
       "subtitle": "Orte und Routen direkt auf deinem iPhone.",
-      "localizedDescription": "Native Karten, Ortssuche, gespeicherte Orte und Routen, GPX-Import/-Export und Routenplayer. Signing über ZLoader; RPPairing-Datei aus ZLoader importieren. Integrierter lokaler Tunnel und nativer DVT-Verbindungspfad. MVP: echte GPS-Simulation auf einem physischen iPhone noch nicht verifiziert. Routen pausieren im Hintergrund. Home-Screen-Name: zPosition.",
+      "localizedDescription": "Native Karten, Ortssuche, gespeicherte Orte und Routen, GPX-Import/-Export und Routenplayer. Importiert standardisierte RPPairing-Dateien und kombinierte Pairing-Dateien aus iLoader, idevice_pair oder zur Verwendung mit SideStore. Keine Bindung an eine bestimmte Pairing-App. Integrierter lokaler Tunnel und nativer DVT-Verbindungspfad. Reine ältere Lockdown-Dateien werden mit Erklärung abgelehnt. MVP: echte GPS-Simulation auf einem physischen iPhone noch nicht verifiziert. Routen pausieren im Hintergrund. Home-Screen-Name: zPosition.",
       "category": "utilities",
       "tintColor": "#00A9F4",
-      "marketingVersion": "1.0.0",
-      "versionDescription": "Erster MVP mit Standard-RPPairing-Import (.mobiledevicepairing), optionalem ZLoader-.zpair-Import, eigener Tunnel-Extension und erhaltenen Signing-Berechtigungen. Selbst über ZLoader signieren; Network-Extension-fähige Profile erforderlich. Physischer GPS-Test steht aus.",
+      "marketingVersion": "1.0.2",
+      "versionDescription": "Standard-Pairing-Import ohne proprietäre App-Abhängigkeit. Öffnen mit zPosition für .mobiledevicepairing, .mobiledevicepair, .rppairing und .plist. Unterstützt XML-/Binär-Plists und kombinierte Lockdown/RPPairing-Dateien. Neues natives Icon für Light, Dark, Clear und Tinted. Selbst mit einem kompatiblen Sideloading-Werkzeug signieren; Network-Extension-fähige Profile erforderlich. Physischer GPS-Test steht aus.",
       "screenshots": [],
       "appPermissions": {
         "entitlements": [
@@ -85,7 +65,8 @@
           "NSLocationWhenInUseUsageDescription": "Center the map on your actual location. This permission does not simulate your device location.",
           "NSLocalNetworkUsageDescription": "Connect locally to this iPhone’s developer location service. No location data is sent to a custom server."
         }
-      }
+      },
+      "iconFile": "catalog/assets/zposition-icon.png"
     }
   },
   "uploadedApps": [],
@@ -99,5 +80,8 @@
       "tintColor": "#00C7B7",
       "url": "https://source.zynthec.com"
     }
+  ],
+  "excludedBundleIdentifiers": [
+    "com.zynthec.zloader"
   ]
 }

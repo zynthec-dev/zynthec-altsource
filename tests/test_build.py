@@ -21,7 +21,8 @@ class BuildTests(unittest.TestCase):
         builder = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(builder)
         bundle_ids = {builder.plist_from_ipa(ipa)[0]["CFBundleIdentifier"] for ipa in ipas}
-        self.assertEqual({app["bundleIdentifier"] for app in source["apps"]}, bundle_ids)
+        excluded = set(json.loads((ROOT / "catalog/content.json").read_text()).get("excludedBundleIdentifiers", []))
+        self.assertEqual({app["bundleIdentifier"] for app in source["apps"]}, bundle_ids - excluded)
         for app in source["apps"]:
             self.assertTrue(app["versions"][0]["downloadURL"].endswith(".ipa"))
             self.assertGreater(app["versions"][0]["size"], 0)
@@ -63,14 +64,12 @@ class BuildTests(unittest.TestCase):
                 published = Path(unquote(urlparse(app["versions"][0]["downloadURL"]).path)).name
                 self.assertEqual(published, preferred)
 
-    def test_zloader_stays_first_when_available(self):
+    def test_excluded_apps_are_not_published(self):
         source = json.loads((DIST / "source.json").read_text())
-        identifiers = [app["bundleIdentifier"] for app in source["apps"]]
-        if "com.zynthec.zloader" in identifiers:
-            self.assertEqual(identifiers[0], "com.zynthec.zloader")
-            self.assertEqual(source["featuredApps"], ["com.zynthec.zloader"])
-        else:
-            self.assertEqual(source["featuredApps"], [])
+        content = json.loads((ROOT / "catalog/content.json").read_text())
+        identifiers = {app["bundleIdentifier"] for app in source["apps"]}
+        self.assertFalse(identifiers.intersection(content.get("excludedBundleIdentifiers", [])))
+        self.assertEqual(source["featuredApps"], [])
 
     def test_apps_use_supported_categories(self):
         source = json.loads((DIST / "source.json").read_text())

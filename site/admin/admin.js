@@ -67,16 +67,12 @@ async function load() {
 function records() {
   const local = Object.entries(state.content.localApps).map(([key, app]) => ({ kind: "local", key, app }));
   const uploaded = state.content.uploadedApps.map((app, index) => ({ kind: "uploaded", key: index, app }));
-  return [...local, ...uploaded].sort((a, b) => Number(isZLoader(b)) - Number(isZLoader(a)));
-}
-
-function isZLoader(record) {
-  return record.key === "com.zynthec.zloader" || record.app.bundleIdentifier === "com.zynthec.zloader";
+  return [...local, ...uploaded].sort((a, b) => (a.app.name || "").localeCompare(b.app.name || ""));
 }
 
 function render() {
   const apps = records();
-  $("#appsList").innerHTML = apps.map(({ kind, key, app }) => `<button type="button" class="admin-item" data-kind="${kind}" data-key="${escapeHTML(key)}" data-pinned="${isZLoader({kind,key,app})}"><span class="admin-item-mark" aria-hidden="true">${isZLoader({kind,key,app}) ? "z" : "IPA"}</span><span class="admin-item-copy"><span class="item-title">${escapeHTML(app.name || app.ipaFile || key)}</span><span class="item-description">${escapeHTML(app.marketingVersion ? `Version ${app.marketingVersion} · ` : "")}${escapeHTML(app.ipaFile || key)}</span>${isZLoader({kind,key,app}) ? '<span class="pin-label">An erster Stelle · zLoader</span>' : ""}</span><span class="chevron" aria-hidden="true">›</span></button>`).join("") || '<div class="empty-shot">Noch keine Apps. Über „App hochladen“ kannst du die erste IPA hinzufügen.</div>';
+  $("#appsList").innerHTML = apps.map(({ kind, key, app }) => `<button type="button" class="admin-item" data-kind="${kind}" data-key="${escapeHTML(key)}"><span class="admin-item-mark" aria-hidden="true">IPA</span><span class="admin-item-copy"><span class="item-title">${escapeHTML(app.name || app.ipaFile || key)}</span><span class="item-description">${escapeHTML(app.marketingVersion ? `Version ${app.marketingVersion} · ` : "")}${escapeHTML(app.ipaFile || key)}</span></span><span class="chevron" aria-hidden="true">›</span></button>`).join("") || '<div class="empty-shot">Noch keine Apps. Über „App hochladen“ kannst du die erste IPA hinzufügen.</div>';
 }
 
 function defaultApp() {
